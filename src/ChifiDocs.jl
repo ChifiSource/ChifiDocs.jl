@@ -34,6 +34,7 @@ abstract type AbstractDocClient end
 
 mutable struct DocClient <: AbstractDocClient
     key::String
+    tabs::Pair{String, Component{<:Any}}
 end
 
 getindex(dc::Vector{<:AbstractDocClient}, ref::String) = begin
@@ -44,10 +45,12 @@ mutable struct ClientDocLoader <: Toolips.AbstractExtension
     docmods::Vector{DocModule}
     client_keys::Dict{String, String}
     clients::Vector{DocClient}
+    pages::Vector{AbstractComponent}
 end
 
 
 function generate_tabbar(c::Toolips.AbstractConnection)
+    clients = c[:ClientDocLoader].clients
     
 end
 
