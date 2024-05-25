@@ -48,6 +48,14 @@ function generate_menu(mods::Vector{DocSystem})
     menuholder::Component{:div}
 end
 
+function generate_menu(dm::Vector{DocModule})
+    
+end
+
+function switch_tabs!(c::AbstractConnection, cm::ComponentModifier, t::String)
+
+end
+
 function generate_tabbar(client::DocClient)
     tabholder::Component{:div} = div("tabs", align = "left",
     children = [begin
@@ -55,6 +63,9 @@ function generate_tabbar(client::DocClient)
         style!(taba, "padding" => 10px, "font-size" => 13pt, "font-weight" => "bold", 
         "color" => "#333333", "background-color" => "lightgray", "cursor" => "pointer", 
         "border-bottom" => "1px solid #333333", "border-right" => "1px solid #333333")
+        on(c, taba, "click") do cm::ComponentModifier
+            switch_tabs!(c, cm, tab.name)
+        end
         taba
     end for (e, tab) in enumerate(client.tabs)])
     childs = tabholder[:children]
@@ -89,16 +100,14 @@ function home(c::Toolips.AbstractConnection)
     push!(main_container, tabbar, main_window)
     left_menu::Component{:div} = div("left_menu")
     style!(left_menu, "width" => 20percent, "height" => 80percent, "background-color" => "darkgray", "border-bottom-left-radius" => 5px, "border-top-left-radius" => 5px)
-    hoverregion = div("menu_button")
-    style!(hoverregion, "position" => "absolute", "top" => 0, "left" => 0, "background" => "transparent", 
-    "width" => 100percent, "height" => 10percent, "z-index" => -1, "transition" => 1s)
-    on(c, hoverregion, "mouseenter") do cm::ComponentModifier
+#==    on(c, hoverregion, "mouseenter") do cm::ComponentModifier
         style!(cm, "mainmenu", "top" => 10)
         style!(cm, "main", "margin-top" => 7percent)
-    end
-    push!(mainbody, pages["mainmenu"], hoverregion, left_menu, main_container)
+    end ==#
+    push!(mainbody, pages["mainmenu"], left_menu, main_container)
     write!(c, mainbody)
 end
+
 
 main = route(home, "/")
 docloader = ClientDocLoader(doc_systems)

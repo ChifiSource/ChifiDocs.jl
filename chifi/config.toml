@@ -1,16 +1,50 @@
-[toolips]
-color = ""
+[chifi]
+color = "white"
 txtcolor = "#333333"
+icon = ""
+
+[chifi.ChifiSource]
+[chifi.ChiNS]
+[chifi.ChiProxy]
+[chifi.ChiDB]
+[chifi.ChiNAS]
+
+[parametric]
+color = "#333333"
+txtcolor = "white"
+icon = ""
+
+[parametric.ParametricProcesses]
+color = "#75B2C8"
+txtcolor = "white"
+
+[toolips]
+color = "#75B2C8"
+txtcolor = "white"
+icon = ""
 
 [toolips.Toolips]
 path = "toolips/Toolips"
 color = ""
-pages = ["getting started" => "firstoverview.md"]
+pages = ["getting-started", "firstoverview.md"]
 
 [toolips.ToolipsSession]
 path = "toolips/ToolipsSession"
+color = ""
+pages = ["getting-started", "firstoverview.md"]
 
+[gattino]
+color = "#C178B5"
+txtcolor = "white"
+icon = ""
+
+[gattino.Gattino]
 path = "toolips/ToolipsSession"
 color = ""
-pages = ["getting started" => "firstoverview.md"]
+pages = ["getting-started", "firstoverview.md"]
+
+[gattino.GattinoPleths]
+path = "toolips/Toolips"
+color = ""
+pages = ["getting-started", "firstoverview.md"]
 
