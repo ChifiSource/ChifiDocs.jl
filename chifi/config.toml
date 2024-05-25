@@ -1,0 +1,16 @@
+[toolips]
+color = ""
+txtcolor = "#333333"
+
+[toolips.Toolips]
+path = "toolips/Toolips"
+color = ""
+pages = ["getting started" => "firstoverview.md"]
+
+[toolips.ToolipsSession]
+path = "toolips/ToolipsSession"
+
+path = "toolips/ToolipsSession"
+color = ""
+pages = ["getting started" => "firstoverview.md"]
+
