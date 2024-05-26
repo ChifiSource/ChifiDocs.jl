@@ -95,7 +95,7 @@ function home(c::Toolips.AbstractConnection)
     if ~(ip in keys(client_keys))
         key::String = Toolips.gen_ref(4)
         push!(client_keys, ip => key)
-        push!(c[:doc].clients, DocClient(key, [div("chifi-", text = "hello world")]))
+        push!(c[:doc].clients, DocClient(key, [div("chifi-Chifi", text = "chifi | Chifi")]))
     end
     key = client_keys[ip]
     client::DocClient = c[:doc].clients[key]
@@ -108,9 +108,9 @@ function home(c::Toolips.AbstractConnection)
     ecopage = split(mod, "-")
     @info ecopage
     @info [docmod.name for docmod in c[:doc].docsystems]
-    @info [docmod.name for docmod in c[:doc].docsystems["toolips"].docmods]
+    @info [docmod.name for docmod in c[:doc].docsystems["toolips"].modules]
     loaded_page = c[:doc].docsystems[string(ecopage[1])].modules[string(ecopage[2])]
-    left_menu = build_leftmenu(c, mod)
+    left_menu = build_leftmenu(c, loaded_page)
     push!(mainbody, pages["mainmenu"], left_menu, main_container)
     write!(c, mainbody)
 end

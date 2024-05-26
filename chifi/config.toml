@@ -3,6 +3,11 @@ color = "white"
 txtcolor = "#333333"
 icon = ""
 
+[chifi.Chifi]
+path = "toolips/Toolips"
+color = ""
+pages = ["getting-started", "firstoverview.md"]
+
 [parametric]
 color = "#333333"
 txtcolor = "white"

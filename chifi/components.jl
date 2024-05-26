@@ -8,4 +8,8 @@ module ChifiDocComponents
 using Toolips
 using ToolipsSession
 using Gattino
+
+module Chifi
+
+end
 end
