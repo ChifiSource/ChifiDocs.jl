@@ -3,12 +3,6 @@ color = "white"
 txtcolor = "#333333"
 icon = ""
 
-[chifi.ChifiSource]
-[chifi.ChiNS]
-[chifi.ChiProxy]
-[chifi.ChiDB]
-[chifi.ChiNAS]
-
 [parametric]
 color = "#333333"
 txtcolor = "white"
@@ -31,7 +25,7 @@ pages = ["getting-started", "firstoverview.md"]
 [toolips.ToolipsSession]
 path = "toolips/ToolipsSession"
 color = ""
-pages = ["getting-started", "firstoverview.md"]
+pages = ["nil"]
 
 [gattino]
 color = "#C178B5"
@@ -39,12 +33,8 @@ txtcolor = "white"
 icon = ""
 
 [gattino.Gattino]
-path = "toolips/ToolipsSession"
+path = "gattino/Gattino"
 color = ""
-pages = ["getting-started", "firstoverview.md"]
+pages = ["sample", "gattino.md"]
 
-[gattino.GattinoPleths]
-path = "toolips/Toolips"
-color = ""
-pages = ["getting-started", "firstoverview.md"]
 
