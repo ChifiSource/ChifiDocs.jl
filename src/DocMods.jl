@@ -19,6 +19,7 @@ getindex(dc::Vector{<:DocServable}, ref::String) = begin
     if isnothing(pos)
         @info ref
         @info [doc.name for doc in dc]
+        throw("$ref was not in here")
     end
     dc[pos]::DocServable
 end
@@ -45,7 +46,7 @@ function read_doc_config(path::String, mod::Module = Main)
         ecodata = ecosystem[2]
         name = ecosystem[1]
         mods = Vector{DocModule}(filter(k -> ~(isnothing(k)), [begin
-            docmod_from_data(dct[1], dct[2], mod)
+            docmod_from_data(dct[1], dct[2], mod, path)
         end for dct in filter(k -> typeof(k[2]) <: AbstractDict, ecodata)]))
         push!(docsystems, 
         DocSystem(ecosystem[1], ecodata["color"], ecodata["txtcolor"], mods))
@@ -53,7 +54,7 @@ function read_doc_config(path::String, mod::Module = Main)
     docsystems::Vector{DocSystem}
 end
 
-function docmod_from_data(name::String, dct_data::Dict{String, <:Any}, mod::Module)
+function docmod_from_data(name::String, dct_data::Dict{String, <:Any}, mod::Module, path::String)
     data_keys = keys(dct_data)
     if ~("color" in data_keys)
         push!(dct_data, "color" => "lightgray")
@@ -63,12 +64,13 @@ function docmod_from_data(name::String, dct_data::Dict{String, <:Any}, mod::Modu
         return(nothing)::Nothing
     end
     pages = Vector{Component{<:Any}}()
+    path::String = split(path, "/")[1] * "/modules/" * dct_data["path"]
     if "pages" in data_keys
         dpages = dct_data["pages"]
-        pages = [begin 
-            div(string(n), text = dpages[n - 1])
+        pages = [begin
+            tmd(string(dpages[n - 1]), read(path * "/" * dpages[n], String))
         end for n in range(2, length(dpages), step = 2)]
     end
     DocModule(name, dct_data["color"], 
-        pages, dct_data["path"])
+        pages, path)
 end

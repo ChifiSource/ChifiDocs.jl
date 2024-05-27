@@ -3,10 +3,10 @@ color = "white"
 txtcolor = "#333333"
 icon = ""
 
-[chifi.Chifi]
-path = "toolips/Toolips"
+[chifi.ChifiDocs]
+path = "chifi/ChifiDocs"
 color = ""
-pages = ["getting-started", "firstoverview.md"]
+pages = ["welcome", "welcome.md"]
 
 [parametric]
 color = "#333333"
@@ -40,6 +40,6 @@ icon = ""
 [gattino.Gattino]
 path = "gattino/Gattino"
 color = ""
-pages = ["sample", "gattino.md"]
+pages = []
 
 
