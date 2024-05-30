@@ -5,7 +5,7 @@ icon = ""
 
 [chifi.ChifiDocs]
 path = "chifi/ChifiDocs"
-color = ""
+color = "#FDB0C0"
 pages = ["welcome", "welcome.md"]
 
 [parametric]

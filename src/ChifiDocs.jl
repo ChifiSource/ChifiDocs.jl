@@ -54,10 +54,12 @@ function make_stylesheet()
     tab_x = ("font-size" => 14pt, "border-radius" => 3px, "padding" => 4px, "margin-left" => 4px)
     tab_x_active = Style("a.tabxactive", "color" => "white", "background-color" => "darkred", tab_x ...)
     tab_x_inactive = Style("a.tabinactive", "color" => "#333333", "background-color" => "lightgray", tab_x ...)
-    left_menu_elements = Style("div.menuitem")
+    left_menu_elements = Style("div.menuitem", "width" => 90percent, "border-bottom" => "2px solid #333333", 
+    "margin-left" => 5percent, "padding" => 8px, "margin-top" => 20px)
     main_menus = Style("div.mainmenu")
     sheet = Component{:stylesheet}("styles")
-    sheet[:children] = Vector{AbstractComponent}([tab_active, tab_inactive, tab_x_active, tab_x_inactive])
+    sheet[:children] = Vector{AbstractComponent}([tab_active, tab_inactive, tab_x_active, tab_x_inactive, 
+    left_menu_elements, main_menus])
     sheet::Component{:stylesheet}
 end
 
@@ -91,7 +93,7 @@ function build_main(c::AbstractConnection, client::DocClient)
     tabbar, docname = generate_tabbar(c, client)
     main_window = div("main_window", align = "left")
     push!(main_window, get_docpage(c, docname))
-    style!(main_window, "background-color" => "white", "height" => 100percent, "padding" => 10px)
+    style!(main_window, "background-color" => "white", "height" => 100percent, "padding" => 30px)
     main_container::Component{:div} = div("main-container", children = [tabbar, main_window])
     style!(main_container, "height" => 80percent, "width" => 75percent, "background-color" => "lightgray", "padding" => 0px, "display" => "flex", "flex-direction" => "column", 
     "border-bottom-right-radius" => 5px, "border-top-right-radius" => 5px, "border" => "2px solid #211f1f", "border-left" => "none", "border-top" => "none")
@@ -104,15 +106,25 @@ function get_docpage(c::AbstractConnection, name::String)
 end
 
 function build_leftmenu(c::AbstractConnection, mod::DocModule)
-    [begin 
-        pagename = page.name
-        openbutton = button("open-$pagename", text = "open")
-        labela = a("label-$pagename", text = replace(pagename, "-" => " "))
-        pagemenu = div("pagemenu", text = "")
-    end for page in mod.pages]
-    left_menu::Component{:div} = div("left_menu")
-    style!(left_menu, "width" => 20percent, "height" => 80percent, "background-color" => "darkgray", "border-bottom-left-radius" => 5px, "border-top-left-radius" => 5px)
+    items = build_leftmenu_elements(c, mod)
+    left_menu::Component{:div} = div("left_menu", children = items)
+    style!(left_menu, "width" => 20percent, "height" => 80percent, "background-color" => "darkgray", "border-bottom-left-radius" => 5px, "border-top-left-radius" => 5px, 
+    "padding" => 15px)
     left_menu::Component{:div}
+end
+
+function build_leftmenu_elements(c::AbstractConnection, mod::DocModule)
+    [begin 
+    pagename = page.name
+    openbutton = button("open-$pagename", text = "open")
+    style!(openbutton, "border" => 0px, "border-radius" => 2px, "font-size" => 10pt)
+    labela = a("label-$pagename", text = replace(pagename, "-" => " "))
+    style!(labela, "font-size" => 13pt, "font-weight" => "bold", "color" => "#333333")
+    pagemenu = div("pagemenu-$pagename", align = "left", class = "menuitem")
+    style!(pagemenu, "background-color" => mod.color)
+    push!(pagemenu, labela, openbutton)
+    pagemenu::Component{:div}
+end for page in mod.pages]::Vector{<:AbstractComponent}
 end
 
 function home(c::Toolips.AbstractConnection)
