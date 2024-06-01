@@ -18,26 +18,29 @@ mutable struct ClientDocLoader <: Toolips.AbstractExtension
     clients::Vector{DocClient}
     pages::Vector{AbstractComponent}
     ClientDocLoader(docsystems::Vector{DocSystem} = Vector{DocSystem}()) = begin
-        pages::Vector{AbstractComponent} = Vector{AbstractComponent}([generate_menu(docsystems)])
+        pages::Vector{AbstractComponent} = Vector{AbstractComponent}()
         new(docsystems, Dict{String, String}(), Vector{DocClient}(), pages)::ClientDocLoader
     end
 end
 
 function on_start(ext::ClientDocLoader, data::Dict{Symbol, Any}, routes::Vector{<:AbstractRoute})
     ss = make_stylesheet()
-    push!(ext.pages, ss)
+    push!(ext.pages, ss, generate_menu(ext.docsystems))
     push!(data, :doc => ext)
 end
 
 function generate_menu(mods::Vector{DocSystem})
-    menuholder::Component{:div} = div("mainmenu", align = "center", 
+    menuholder::Component{:div} = div("mainmenu", align = "right", 
     children = [begin
-        mdiv = div(string(menu_mod.name) * "eco", text = "$(menu_mod.name)")
+        modname = menu_mod.name
+        mdiv = div("eco$modname")
+        preview_img = img("preview$modname", src = menu_mod.)
+        label_a = a("label$modname", text = modname)
         style!(mdiv, "background-color" => menu_mod.color, 
-        "color" => "white", "font-size" => 20pt, "padding" => 14px, "font-weight" => "bold")
+        "color" => "white", "font-size" => 16pt, "padding" => 9px, "font-weight" => "bold")
         mdiv::Component{:div}
     end for menu_mod in mods])
-    style!(menuholder, "width" => 0percent)
+    style!(menuholder, "width" => 1.5percent)
     menuholder::Component{:div}
 end
 
@@ -142,13 +145,16 @@ function home(c::Toolips.AbstractConnection)
     pages = c[:doc].pages
     write!(c, pages["styles"])
     mainbody::Component{:body} = body("main", align = "center")
-    style!(mainbody, "margin-left" => 5percent, "margin-top" => 5percent, "background-color" => "#333333", "display" => "flex", 
+    style!(mainbody, "background-color" => "#333333")
+    app_window::Component{:div} = div("app-window")
+    style!(app_window, "margin-left" => 3.5percent, "margin-top" => 5percent, "background-color" => "#333333", "display" => "flex", 
     "transition" => 1s)
     main_container::Component{:div}, mod::String = build_main(c, client)
     ecopage = split(mod, "-")
     loaded_page = c[:doc].docsystems[string(ecopage[1])].modules[string(ecopage[3])]
     left_menu = build_leftmenu(c, loaded_page)
-    push!(mainbody, pages["mainmenu"], left_menu, main_container)
+    push!(app_window, pages["mainmenu"], left_menu, main_container)
+    push!(mainbody, app_window)
     write!(c, mainbody)
 end
 
