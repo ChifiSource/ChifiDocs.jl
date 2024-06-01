@@ -9,16 +9,13 @@ end
 
 mutable struct DocSystem <: DocServable
     name::String
-    color::String
-    txtcolor::String
     modules::Vector{DocModule}
+    ecodata::Dict{String, Any}
 end
 
 getindex(dc::Vector{<:DocServable}, ref::String) = begin
     pos = findfirst(cl::DocServable -> cl.name == ref, dc)
     if isnothing(pos)
-        @info ref
-        @info [doc.name for doc in dc]
         throw("$ref was not in here")
     end
     dc[pos]::DocServable
@@ -49,7 +46,7 @@ function read_doc_config(path::String, mod::Module = Main)
             docmod_from_data(dct[1], dct[2], mod, path)
         end for dct in filter(k -> typeof(k[2]) <: AbstractDict, ecodata)]))
         push!(docsystems, 
-        DocSystem(ecosystem[1], ecodata["color"], ecodata["txtcolor"], mods))
+        DocSystem(name, mods, Dict{String, Any}(ecodata)))
     end
     docsystems::Vector{DocSystem}
 end

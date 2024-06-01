@@ -13,34 +13,40 @@ session = Session(["/"])
 include("DocMods.jl")
 
 mutable struct ClientDocLoader <: Toolips.AbstractExtension
+    dir::String
     docsystems::Vector{DocSystem}
     client_keys::Dict{String, String}
     clients::Vector{DocClient}
     pages::Vector{AbstractComponent}
     ClientDocLoader(docsystems::Vector{DocSystem} = Vector{DocSystem}()) = begin
         pages::Vector{AbstractComponent} = Vector{AbstractComponent}()
-        new(docsystems, Dict{String, String}(), Vector{DocClient}(), pages)::ClientDocLoader
+        new("", docsystems, Dict{String, String}(), Vector{DocClient}(), pages)::ClientDocLoader
     end
 end
 
 function on_start(ext::ClientDocLoader, data::Dict{Symbol, Any}, routes::Vector{<:AbstractRoute})
     ss = make_stylesheet()
+    push!(routes, mount("/" => "$(ext.dir)/public") ...)
     push!(ext.pages, ss, generate_menu(ext.docsystems))
     push!(data, :doc => ext)
 end
 
 function generate_menu(mods::Vector{DocSystem})
-    menuholder::Component{:div} = div("mainmenu", align = "right", 
+    menuholder::Component{:div} = div("mainmenu", align = "left", 
     children = [begin
         modname = menu_mod.name
         mdiv = div("eco$modname")
-        preview_img = img("preview$modname", src = menu_mod.)
+        @info [k for k in menu_mod.ecodata]
+        preview_img = img("preview$modname", src = menu_mod.ecodata["icon"], width = 25px)
+        style!(preview_img, "display" => "inline-block")
         label_a = a("label$modname", text = modname)
-        style!(mdiv, "background-color" => menu_mod.color, 
-        "color" => "white", "font-size" => 16pt, "padding" => 9px, "font-weight" => "bold")
+        style!(mdiv, "background-color" => menu_mod.ecodata["color"], "overflow" => "hidden")
+        style!(label_a, "color" => "white", "font-size" => 16pt, "padding" => 9px, "font-weight" => "bold", 
+        "display" => "inline-block")
+        push!(mdiv, preview_img, label_a)
         mdiv::Component{:div}
     end for menu_mod in mods])
-    style!(menuholder, "width" => 1.5percent)
+    style!(menuholder, "width" => 1.2percent)
     menuholder::Component{:div}
 end
 
@@ -147,7 +153,7 @@ function home(c::Toolips.AbstractConnection)
     mainbody::Component{:body} = body("main", align = "center")
     style!(mainbody, "background-color" => "#333333")
     app_window::Component{:div} = div("app-window")
-    style!(app_window, "margin-left" => 3.5percent, "margin-top" => 5percent, "background-color" => "#333333", "display" => "flex", 
+    style!(app_window, "margin-left" => 4percent, "margin-top" => 5percent, "background-color" => "#333333", "display" => "flex", 
     "transition" => 1s)
     main_container::Component{:div}, mod::String = build_main(c, client)
     ecopage = split(mod, "-")
@@ -161,6 +167,7 @@ end
 docloader = ClientDocLoader()
 
 function start_from_project(path::String = pwd(), mod::Module = Main; ip::Toolips.IP4 = "127.0.0.1":8000)
+    docloader.dir = path
     docloader.docsystems = read_doc_config(path * "/config.toml", mod)
     start!(ChifiDocs, ip)
 end

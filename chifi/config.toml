@@ -1,7 +1,7 @@
 [chifi]
 color = "white"
 txtcolor = "#333333"
-icon = ""
+icon = "/ecosystems/chifi.png"
 
 [chifi.ChifiDocs]
 path = "chifi/ChifiDocs"
@@ -20,7 +20,7 @@ txtcolor = "white"
 [toolips]
 color = "#75B2C8"
 txtcolor = "white"
-icon = ""
+icon = "/ecosystems/toolips.png"
 
 [toolips.Toolips]
 path = "toolips/Toolips"
@@ -35,7 +35,7 @@ pages = ["nil"]
 [gattino]
 color = "#C178B5"
 txtcolor = "white"
-icon = ""
+icon = "/ecosystems/gattino.png"
 
 [gattino.Gattino]
 path = "gattino/Gattino"
