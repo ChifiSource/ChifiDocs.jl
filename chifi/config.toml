@@ -11,7 +11,7 @@ pages = ["welcome", "welcome.md"]
 [parametric]
 color = "#333333"
 txtcolor = "white"
-icon = ""
+icon = "/ecosystems/parametric.png"
 
 [parametric.ParametricProcesses]
 color = "#75B2C8"

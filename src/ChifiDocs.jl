@@ -32,21 +32,22 @@ function on_start(ext::ClientDocLoader, data::Dict{Symbol, Any}, routes::Vector{
 end
 
 function generate_menu(mods::Vector{DocSystem})
-    menuholder::Component{:div} = div("mainmenu", align = "left", 
+    menuholder::Component{:div} = div("mainmenu", align = "center", class = "mmenuholder",
     children = [begin
         modname = menu_mod.name
         mdiv = div("eco$modname")
-        @info [k for k in menu_mod.ecodata]
         preview_img = img("preview$modname", src = menu_mod.ecodata["icon"], width = 25px)
         style!(preview_img, "display" => "inline-block")
-        label_a = a("label$modname", text = modname)
-        style!(mdiv, "background-color" => menu_mod.ecodata["color"], "overflow" => "hidden")
-        style!(label_a, "color" => "white", "font-size" => 16pt, "padding" => 9px, "font-weight" => "bold", 
-        "display" => "inline-block")
+        label_a = a("label$modname", text = modname, class = "mainmenulabel")
+        style!(mdiv, "background-color" => menu_mod.ecodata["color"], "overflow" => "hidden", 
+        "padding-top" => 2px, "height" => 13percent)
+        style!(label_a, "color" => menu_mod.ecodata["txtcolor"])
         push!(mdiv, preview_img, label_a)
         mdiv::Component{:div}
     end for menu_mod in mods])
-    style!(menuholder, "width" => 1.2percent)
+    childs = menuholder[:children]
+    style!(childs[1], "border-top-left-radius" => 3px)
+    style!(childs[length(childs)], "border-bottom-left-radius" => 3px)
     menuholder::Component{:div}
 end
 
@@ -65,10 +66,14 @@ function make_stylesheet()
     tab_x_inactive = Style("a.tabinactive", "color" => "#333333", "background-color" => "lightgray", tab_x ...)
     left_menu_elements = Style("div.menuitem", "width" => 90percent, "border-bottom" => "2px solid #333333", 
     "margin-left" => 5percent, "padding" => 8px, "margin-top" => 20px)
-    main_menus = Style("div.mainmenu")
+    main_menus = Style("a.mainmenulabel", "font-size" => 18pt, "font-weight" => "bold", 
+    "display" => "inline-block", "opacity" => 100percent, "transition" => 400ms)
+    menu_holder = Style("div.mmenuholder", "width" => 1.2percent, "z-index" => 2, "transition" => 800ms, 
+    "overflow" => "hidden")
+    menu_holder:"hover":["width" => 8percent]
     sheet = Component{:stylesheet}("styles")
     sheet[:children] = Vector{AbstractComponent}([tab_active, tab_inactive, tab_x_active, tab_x_inactive, 
-    left_menu_elements, main_menus])
+    left_menu_elements, main_menus, menu_holder])
     sheet::Component{:stylesheet}
 end
 
@@ -117,22 +122,22 @@ end
 function build_leftmenu(c::AbstractConnection, mod::DocModule)
     items = build_leftmenu_elements(c, mod)
     left_menu::Component{:div} = div("left_menu", children = items)
-    style!(left_menu, "width" => 20percent, "height" => 80percent, "background-color" => "darkgray", "border-bottom-left-radius" => 5px, "border-top-left-radius" => 5px, 
+    style!(left_menu, "width" => 20percent, "height" => 80percent, "background-color" => "darkgray", "border-bottom-left-radius" => 5px, 
     "padding" => 15px)
     left_menu::Component{:div}
 end
 
 function build_leftmenu_elements(c::AbstractConnection, mod::DocModule)
     [begin 
-    pagename = page.name
-    openbutton = button("open-$pagename", text = "open")
-    style!(openbutton, "border" => 0px, "border-radius" => 2px, "font-size" => 10pt)
-    labela = a("label-$pagename", text = replace(pagename, "-" => " "))
-    style!(labela, "font-size" => 13pt, "font-weight" => "bold", "color" => "#333333")
-    pagemenu = div("pagemenu-$pagename", align = "left", class = "menuitem")
-    style!(pagemenu, "background-color" => mod.color)
-    push!(pagemenu, labela, openbutton)
-    pagemenu::Component{:div}
+        pagename = page.name
+        openbutton = button("open-$pagename", text = "open")
+        style!(openbutton, "border" => 0px, "border-radius" => 2px, "font-size" => 10pt)
+        labela = a("label-$pagename", text = replace(pagename, "-" => " "))
+        style!(labela, "font-size" => 13pt, "font-weight" => "bold", "color" => "#333333")
+        pagemenu = div("pagemenu-$pagename", align = "left", class = "menuitem")
+        style!(pagemenu, "background-color" => mod.color)
+        push!(pagemenu, labela, openbutton)
+        pagemenu::Component{:div}
 end for page in mod.pages]::Vector{<:AbstractComponent}
 end
 
