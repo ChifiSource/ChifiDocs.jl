@@ -101,8 +101,8 @@ function make_stylesheet()
     tab_inactive = Style("div.tabinactive", "background-color" => "lightgray", "cursor" => "pointer", 
     "border-bottom" => "1px solid #333333", tabs ...)
     inldoc = Style("a.inline-doc", "color" => "darkblue", "font-weight" => "bold", 
-    "font-size" => 15pt, "cursor" => "pointer")
-    inldoc:"hover":["scale" => "1.07"]
+    "font-size" => 15pt, "cursor" => "pointer", "transition" => 400ms)
+    inldoc:"hover":["scale" => "1.07", "color" => "lightblue"]
     tab_x = ("font-size" => 14pt, "border-radius" => 3px, "padding" => 4px, "margin-left" => 4px)
     tab_x_active = Style("a.tabxactive", "color" => "white", "background-color" => "darkred", tab_x ...)
     tab_x_inactive = Style("a.tabinactive", "color" => "#333333", "background-color" => "lightgray", tab_x ...)
@@ -210,12 +210,18 @@ function home(c::Toolips.AbstractConnection)
     main_menu = copy(pages["mainmenu"])
     bind_menu!(c, main_menu)
     push!(app_window, main_menu, left_menu, main_container)
-    push!(mainbody, app_window)
+    push!(mainbody, cursor("doccursor"), app_window)
     write!(c, mainbody)
 end
 
 docloader = ClientDocLoader()
 
+"""
+```julia
+start_from_project
+```
+yadda yadda, documentation.
+"""
 function start_from_project(path::String = pwd(), mod::Module = Main; ip::Toolips.IP4 = "127.0.0.1":8000)
     docloader.dir = path
     docloader.docsystems = read_doc_config(path * "/config.toml", mod)
@@ -224,5 +230,5 @@ end
 
 main = route(home, "/")
 # make sure to export!
-export main, default_404, logger, session, docloader
+export main, default_404, logger, session, docloader, start_from_project, style!
 end # - module ChifiDocs <3
