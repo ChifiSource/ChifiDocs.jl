@@ -61,7 +61,7 @@ function julia_interpolator(raw::String)
     string(tm)::String
 end
 
-html_interpolator(raw::String) = raw::String
+html_interpolator(raw::String) = OliveHighlighters.rep_in(raw)::String
 
 function img_interpolator(raw::String)
     if contains(raw, "|")
@@ -72,7 +72,7 @@ function img_interpolator(raw::String)
         end
         return(string(img(Components.gen_ref(3), src = splits[2], width = splits[1])))::String
     end
-    img(Components.gen_ref(3), src = raw)
+    string(img(Components.gen_ref(3), src = raw))::String
 end
 
 function docmod_from_data(name::String, dct_data::Dict{String, <:Any}, mod::Module, path::String)
@@ -85,15 +85,24 @@ function docmod_from_data(name::String, dct_data::Dict{String, <:Any}, mod::Modu
         return(nothing)::Nothing
     end
     pages = Vector{Component{<:Any}}()
+    docstrings = [begin
+        @info name
+        a(string(name), text = string(name), class = "inline-doc")
+    end for name in names(mod)]
     path::String = split(path, "/")[1] * "/modules/" * dct_data["path"]
     if "pages" in data_keys
         dpages = dct_data["pages"]
         pages = [begin
-            newmd = tmd(string(dpages[n - 1]), read(path * "/" * dpages[n], String))
-            ToolipsServables.interpolate!(newmd, "julia" => julia_interpolator, "img" => img_interpolator)
+            rawsrc::String = replace(read(path * "/" * dpages[n], String), "\"" => "\\|", "<" => "|\\", ">" => "||\\")
+            newmd = tmd(string(dpages[n - 1]), rawsrc)
+            newmd[:text] = replace(newmd[:text], "\\|" => "\"", "|\\" => "<", "||\\" => ">")
+            ToolipsServables.interpolate!(newmd, "julia" => julia_interpolator, "img" => img_interpolator, 
+            "html" => html_interpolator)
+            ToolipsServables.interpolate!(newmd, docstrings ...)
             newmd
         end for n in range(2, length(dpages), step = 2)]
     end
+
     DocModule(name, dct_data["color"], 
         pages, path)
 end

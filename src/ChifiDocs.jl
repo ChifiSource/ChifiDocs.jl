@@ -100,6 +100,9 @@ function make_stylesheet()
     tab_active = Style("div.tabactive",  "background-color" => "white", tabs ...)
     tab_inactive = Style("div.tabinactive", "background-color" => "lightgray", "cursor" => "pointer", 
     "border-bottom" => "1px solid #333333", tabs ...)
+    inldoc = Style("a.inline-doc", "color" => "darkblue", "font-weight" => "bold", 
+    "font-size" => 15pt, "cursor" => "pointer")
+    inldoc:"hover":["scale" => "1.07"]
     tab_x = ("font-size" => 14pt, "border-radius" => 3px, "padding" => 4px, "margin-left" => 4px)
     tab_x_active = Style("a.tabxactive", "color" => "white", "background-color" => "darkred", tab_x ...)
     tab_x_inactive = Style("a.tabinactive", "color" => "#333333", "background-color" => "lightgray", tab_x ...)
@@ -112,7 +115,7 @@ function make_stylesheet()
     menu_holder:"hover":["transform" => scale(1.1)]
     sheet = Component{:stylesheet}("styles")
     sheet[:children] = Vector{AbstractComponent}([tab_active, tab_inactive, tab_x_active, tab_x_inactive, 
-    left_menu_elements, main_menus, menu_holder, ico_font, bttons])
+    left_menu_elements, main_menus, menu_holder, ico_font, bttons, inldoc])
     sheet::Component{:stylesheet}
 end
 
