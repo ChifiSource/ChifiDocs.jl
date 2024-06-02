@@ -42,13 +42,13 @@ function read_doc_config(path::String, mod::Module = Main)
     for ecosystem in data
         ecodata = ecosystem[2]
         name = ecosystem[1]
-        mods = Vector{DocModule}(filter(k -> ~(isnothing(k)), [begin
+        mods = reverse(Vector{DocModule}(filter(k -> ~(isnothing(k)), [begin
             docmod_from_data(dct[1], dct[2], mod, path)
-        end for dct in filter(k -> typeof(k[2]) <: AbstractDict, ecodata)]))
+        end for dct in filter(k -> typeof(k[2]) <: AbstractDict, ecodata)])))
         push!(docsystems, 
         DocSystem(name, mods, Dict{String, Any}(ecodata)))
     end
-    docsystems::Vector{DocSystem}
+    reverse(docsystems)::Vector{DocSystem}
 end
 
 function docmod_from_data(name::String, dct_data::Dict{String, <:Any}, mod::Module, path::String)

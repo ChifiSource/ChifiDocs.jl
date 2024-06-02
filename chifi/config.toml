@@ -24,17 +24,17 @@ icon = "/ecosystems/toolips.png"
 
 [toolips.Toolips]
 path = "toolips/Toolips"
-color = ""
+color = "#1E3F66"
 pages = ["getting-started", "firstoverview.md"]
 
 [toolips.ToolipsSession]
 path = "toolips/ToolipsSession"
-color = ""
-pages = ["nil"]
+color = "#FF4F4B"
+pages = []
 
 [gattino]
 color = "#C178B5"
-txtcolor = "white"
+txtcolor = "#333333"
 icon = "/ecosystems/gattino.png"
 
 [gattino.Gattino]

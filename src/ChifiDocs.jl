@@ -32,15 +32,15 @@ function on_start(ext::ClientDocLoader, data::Dict{Symbol, Any}, routes::Vector{
 end
 
 function generate_menu(mods::Vector{DocSystem})
-    menuholder::Component{:div} = div("mainmenu", align = "center", class = "mmenuholder",
+    menuholder::Component{:div} = div("mainmenu", align = "center", class = "mmenuholder", open = "none",
     children = [begin
         modname = menu_mod.name
-        mdiv = div("eco$modname")
+        mdiv = div("$modname")
         preview_img = img("preview$modname", src = menu_mod.ecodata["icon"], width = 25px)
         style!(preview_img, "display" => "inline-block")
         label_a = a("label$modname", text = modname, class = "mainmenulabel")
         style!(mdiv, "background-color" => menu_mod.ecodata["color"], "overflow" => "hidden", 
-        "padding-top" => 2px, "height" => 13percent)
+        "padding-top" => 2px, "height" => 13percent, "transition" => 500ms)
         style!(label_a, "color" => menu_mod.ecodata["txtcolor"])
         push!(mdiv, preview_img, label_a)
         mdiv::Component{:div}
@@ -51,11 +51,49 @@ function generate_menu(mods::Vector{DocSystem})
     menuholder::Component{:div}
 end
 
+function bind_menu!(c::AbstractConnection, menu::Component{:div})
+    [begin
+        econame::String = child.name
+        on(c, child, "click") do cm::ComponentModifier
+            opened::String = cm["mainmenu"]["open"]
+            if opened == econame
+                style!(cm, econame, "height" => 13percent)
+                cm["mainmenu"] = "open" => "none"
+                remove!(cm, "expandmenu")
+                return
+            elseif opened != "none"
+                style!(cm, opened, "height" => 13percent)
+                remove!(cm, "expandmenu")
+            end
+            style!(cm, econame, "height" => 80percent)
+            cm["mainmenu"] = "open" => econame
+            selected_system = c[:doc].docsystems[child.name]
+            submenu = [begin
+                    docn = docmod.name
+                    menitem = div("men$docn")
+                    style!(menitem, "cursor" => "pointer", "border-radius" => 2px, "background-color" => docmod.color, 
+                    "border-left" => "3px solid $(selected_system.ecodata["color"])")
+                    doclabel = div("doclabel", text = docn)
+                    style!(doclabel, "padding" => 3px, "font-size" => 13pt, "color" => "white")
+                    push!(menitem, doclabel)
+                    on(c, menitem, "click") do cm::ComponentModifier
+                        alert!(cm, "this will set the left menu elements, and open a new tab.")
+                    end
+                    menitem
+            end for docmod in selected_system.modules]
+            menuel = div("expandmenu", children = submenu)
+            append!(cm, econame, menuel)
+        end
+    end for child in menu[:children]]
+end
+
 function switch_tabs!(c::AbstractConnection, cm::ComponentModifier, t::String)
     
 end
 
 function make_stylesheet()
+    bttons = Style("button", "font-family" => "storycan")
+    ico_font = Style("@font-face", "font-family" => "'storycan'", "src" => "url(/fonts/storycan-icons.ttf)")
     tabs = ("padding" => 10px, "font-size" => 13pt, "font-weight" => "bold", 
     "color" => "#333333", "border-top" => "1px solid #333333", "border-right" => "1px solid #333333")
     tab_active = Style("div.tabactive",  "background-color" => "white", tabs ...)
@@ -68,12 +106,12 @@ function make_stylesheet()
     "margin-left" => 5percent, "padding" => 8px, "margin-top" => 20px)
     main_menus = Style("a.mainmenulabel", "font-size" => 18pt, "font-weight" => "bold", 
     "display" => "inline-block", "opacity" => 100percent, "transition" => 400ms)
-    menu_holder = Style("div.mmenuholder", "width" => 1.2percent, "z-index" => 2, "transition" => 800ms, 
-    "overflow" => "hidden")
-    menu_holder:"hover":["width" => 8percent]
+    menu_holder = Style("div.mmenuholder", "width" => 8percent, "z-index" => 2, "transition" => 800ms, 
+    "overflow" => "hidden", "height" => 80percent)
+    menu_holder:"hover":["transform" => scale(1.1)]
     sheet = Component{:stylesheet}("styles")
     sheet[:children] = Vector{AbstractComponent}([tab_active, tab_inactive, tab_x_active, tab_x_inactive, 
-    left_menu_elements, main_menus, menu_holder])
+    left_menu_elements, main_menus, menu_holder, ico_font, bttons])
     sheet::Component{:stylesheet}
 end
 
@@ -130,8 +168,9 @@ end
 function build_leftmenu_elements(c::AbstractConnection, mod::DocModule)
     [begin 
         pagename = page.name
-        openbutton = button("open-$pagename", text = "open")
-        style!(openbutton, "border" => 0px, "border-radius" => 2px, "font-size" => 10pt)
+        openbutton = button("open-$pagename", text = "d")
+        style!(openbutton, "border" => 0px, "border-radius" => 2px, "font-size" => 16pt, "background" => "transparent", 
+        "color" => "#333333")
         labela = a("label-$pagename", text = replace(pagename, "-" => " "))
         style!(labela, "font-size" => 13pt, "font-weight" => "bold", "color" => "#333333")
         pagemenu = div("pagemenu-$pagename", align = "left", class = "menuitem")
@@ -158,13 +197,15 @@ function home(c::Toolips.AbstractConnection)
     mainbody::Component{:body} = body("main", align = "center")
     style!(mainbody, "background-color" => "#333333")
     app_window::Component{:div} = div("app-window")
-    style!(app_window, "margin-left" => 4percent, "margin-top" => 5percent, "background-color" => "#333333", "display" => "flex", 
+    style!(app_window, "margin-left" => .5percent, "margin-top" => 5percent, "background-color" => "#333333", "display" => "flex", 
     "transition" => 1s)
     main_container::Component{:div}, mod::String = build_main(c, client)
     ecopage = split(mod, "-")
     loaded_page = c[:doc].docsystems[string(ecopage[1])].modules[string(ecopage[3])]
     left_menu = build_leftmenu(c, loaded_page)
-    push!(app_window, pages["mainmenu"], left_menu, main_container)
+    main_menu = copy(pages["mainmenu"])
+    bind_menu!(c, main_menu)
+    push!(app_window, main_menu, left_menu, main_container)
     push!(mainbody, app_window)
     write!(c, mainbody)
 end
