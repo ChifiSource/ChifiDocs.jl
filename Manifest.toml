@@ -2,7 +2,7 @@
 
 julia_version = "1.9.2"
 manifest_format = "2.0"
-project_hash = "aae441d08f84ff8f8b89b5757c62958d6a90ad19"
+project_hash = "de08b74c34696696ab44d77eaa2aa123a2b20502"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -146,6 +146,12 @@ version = "2022.10.11"
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
 version = "1.2.0"
 
+[[deps.OliveHighlighters]]
+deps = ["ToolipsServables"]
+path = "../../olive/OliveHighlighters"
+uuid = "f769160f-f39a-4920-b1de-ba699e2d8893"
+version = "0.1.0"
+
 [[deps.OpenSSL]]
 deps = ["BitFlags", "Dates", "MozillaCACerts_jll", "OpenSSL_jll", "Sockets"]
 git-tree-sha1 = "38cb508d080d21dc1128f7fb04f20387ed4c0af4"
@@ -241,7 +247,9 @@ version = "0.3.2"
 
 [[deps.ToolipsServables]]
 deps = ["Base64", "Markdown"]
-git-tree-sha1 = "4913d8fdb9c11a2f3e10ca050a04c44e71e2c597"
+git-tree-sha1 = "19f7c2790a40d5024753c2eab7679ef22230dbaa"
+repo-rev = "Unstable"
+repo-url = "https://github.com/ChifiSource/ToolipsServables.jl.git"
 uuid = "bf3a9e68-ca66-4981-8178-9d71c4f8abaa"
 version = "0.1.5"
 

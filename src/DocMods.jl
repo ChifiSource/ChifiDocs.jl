@@ -51,6 +51,30 @@ function read_doc_config(path::String, mod::Module = Main)
     reverse(docsystems)::Vector{DocSystem}
 end
 
+JULIA_HIGHLIGHTER = OliveHighlighters.TextStyleModifier()
+OliveHighlighters.julia_block!(JULIA_HIGHLIGHTER)
+
+function julia_interpolator(raw::String)
+    tm = JULIA_HIGHLIGHTER
+    set_text!(tm, raw)
+    OliveHighlighters.mark_julia!(tm)
+    string(tm)::String
+end
+
+html_interpolator(raw::String) = raw::String
+
+function img_interpolator(raw::String)
+    if contains(raw, "|")
+        splits = split(raw, "|")
+        if length(splits) == 3
+            return(string(div(Components.gen_ref(3), align = splits[2], 
+            children = [img(Components.gen_ref(3), src = splits[3], width = splits[1])])))::String
+        end
+        return(string(img(Components.gen_ref(3), src = splits[2], width = splits[1])))::String
+    end
+    img(Components.gen_ref(3), src = raw)
+end
+
 function docmod_from_data(name::String, dct_data::Dict{String, <:Any}, mod::Module, path::String)
     data_keys = keys(dct_data)
     if ~("color" in data_keys)
@@ -65,7 +89,9 @@ function docmod_from_data(name::String, dct_data::Dict{String, <:Any}, mod::Modu
     if "pages" in data_keys
         dpages = dct_data["pages"]
         pages = [begin
-            tmd(string(dpages[n - 1]), read(path * "/" * dpages[n], String))
+            newmd = tmd(string(dpages[n - 1]), read(path * "/" * dpages[n], String))
+            ToolipsServables.interpolate!(newmd, "julia" => julia_interpolator, "img" => img_interpolator)
+            newmd
         end for n in range(2, length(dpages), step = 2)]
     end
     DocModule(name, dct_data["color"], 

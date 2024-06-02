@@ -5,6 +5,7 @@ using Toolips.Components
 import Toolips: on_start
 import Base: getindex
 using ToolipsSession
+using OliveHighlighters
 
 # extensions
 logger = Toolips.Logger()
