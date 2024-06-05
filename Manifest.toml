@@ -1,8 +1,8 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.9.2"
+julia_version = "1.10.3"
 manifest_format = "2.0"
-project_hash = "de08b74c34696696ab44d77eaa2aa123a2b20502"
+project_hash = "48f4677d56b4dd6b30804d9b251d9d2563d6d3d6"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -18,6 +18,12 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 git-tree-sha1 = "2dc09997850d68179b69dafb58ae806167a32b1b"
 uuid = "d1d4a3ce-64b1-5f1a-9ba4-7e7e69966f35"
 version = "0.1.8"
+
+[[deps.ChifiDocs]]
+deps = ["OliveHighlighters", "Revise", "TOML", "Toolips", "ToolipsServables", "ToolipsSession"]
+path = ".."
+uuid = "4e841206-9f20-48d9-9ddd-dfd252355962"
+version = "0.1.0"
 
 [[deps.CodeTracking]]
 deps = ["InteractiveUtils", "UUIDs"]
@@ -64,6 +70,12 @@ version = "0.1.10"
 [[deps.FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
+[[deps.Gattino]]
+deps = ["ToolipsSVG"]
+git-tree-sha1 = "444fbab09a72c589a900463837e2bbf6218471db"
+uuid = "f0fb3ee5-f608-41f3-a42d-dac276373afc"
+version = "0.1.1"
+
 [[deps.HTTP]]
 deps = ["Base64", "CodecZlib", "ConcurrentUtilities", "Dates", "ExceptionUnwrapping", "Logging", "LoggingExtras", "MbedTLS", "NetworkOptions", "OpenSSL", "Random", "SimpleBufferStream", "Sockets", "URIs", "UUIDs"]
 git-tree-sha1 = "d1d712be3164d61d1fb98e7ce9bcbc6cc06b45ed"
@@ -89,21 +101,26 @@ version = "0.9.31"
 [[deps.LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
 uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
-version = "0.6.3"
+version = "0.6.4"
 
 [[deps.LibCURL_jll]]
 deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
 uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
-version = "7.84.0+0"
+version = "8.4.0+0"
 
 [[deps.LibGit2]]
-deps = ["Base64", "NetworkOptions", "Printf", "SHA"]
+deps = ["Base64", "LibGit2_jll", "NetworkOptions", "Printf", "SHA"]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
+
+[[deps.LibGit2_jll]]
+deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll"]
+uuid = "e37daf67-58a4-590a-8e99-b0245dd2ffc5"
+version = "1.6.4+0"
 
 [[deps.LibSSH2_jll]]
 deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
 uuid = "29816b5a-b9ab-546f-933c-edad1886dfa8"
-version = "1.10.2+0"
+version = "1.11.0+1"
 
 [[deps.Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
@@ -136,11 +153,11 @@ version = "1.1.9"
 [[deps.MbedTLS_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
-version = "2.28.2+0"
+version = "2.28.2+1"
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2022.10.11"
+version = "2023.1.10"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
@@ -148,7 +165,7 @@ version = "1.2.0"
 
 [[deps.OliveHighlighters]]
 deps = ["ToolipsServables"]
-path = "../../olive/OliveHighlighters"
+path = "../../../olive/OliveHighlighters"
 uuid = "f769160f-f39a-4920-b1de-ba699e2d8893"
 version = "0.1.0"
 
@@ -178,7 +195,7 @@ version = "0.1.0"
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.9.2"
+version = "1.10.0"
 
 [[deps.Preferences]]
 deps = ["TOML"]
@@ -195,7 +212,7 @@ deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
 uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
 [[deps.Random]]
-deps = ["SHA", "Serialization"]
+deps = ["SHA"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [[deps.Requires]]
@@ -245,19 +262,23 @@ git-tree-sha1 = "bdfe0e17c4bb4965d4325cc10ae6999e652a9846"
 uuid = "a47e2ad8-fcf7-417c-9746-32b9bdf220bd"
 version = "0.3.2"
 
+[[deps.ToolipsSVG]]
+deps = ["ToolipsServables"]
+git-tree-sha1 = "eb4513cab88ebed20396834bcd634e97cba3655d"
+uuid = "8ae86ec9-919d-4ece-9a6d-09b7d28dae11"
+version = "0.2.0"
+
 [[deps.ToolipsServables]]
 deps = ["Base64", "Markdown"]
-git-tree-sha1 = "19f7c2790a40d5024753c2eab7679ef22230dbaa"
-repo-rev = "Unstable"
-repo-url = "https://github.com/ChifiSource/ToolipsServables.jl.git"
+git-tree-sha1 = "4913d8fdb9c11a2f3e10ca050a04c44e71e2c597"
 uuid = "bf3a9e68-ca66-4981-8178-9d71c4f8abaa"
 version = "0.1.5"
 
 [[deps.ToolipsSession]]
-deps = ["Dates", "Toolips"]
-git-tree-sha1 = "143da5ef08d0877f634ae46d455611605f0a8339"
+deps = ["Dates", "Test", "Toolips", "ToolipsServables"]
+path = "../../../toolips/ToolipsSession.jl"
 uuid = "2fe55384-55bc-4df3-9d59-c817d405cd05"
-version = "0.4.0"
+version = "0.3.5"
 
 [[deps.TranscodingStreams]]
 git-tree-sha1 = "5d54d076465da49d6746c647022f3b3674e64156"
@@ -283,14 +304,14 @@ uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 [[deps.Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
-version = "1.2.13+0"
+version = "1.2.13+1"
 
 [[deps.nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
-version = "1.48.0+0"
+version = "1.52.0+1"
 
 [[deps.p7zip_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.4.0+0"
+version = "17.4.0+2"
