@@ -1,7 +1,0 @@
-[deps]
-ChifiDocs = "4e841206-9f20-48d9-9ddd-dfd252355962"
-Gattino = "f0fb3ee5-f608-41f3-a42d-dac276373afc"
-Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
-TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
-Toolips = "a47e2ad8-fcf7-417c-9746-32b9bdf220bd"
-ToolipsSession = "2fe55384-55bc-4df3-9d59-c817d405cd05"
