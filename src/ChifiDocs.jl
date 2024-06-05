@@ -104,10 +104,9 @@ function make_stylesheet()
     "font-size" => 15pt, "cursor" => "pointer", "transition" => 400ms)
     inldoc:"hover":["scale" => "1.07", "color" => "lightblue"]
     tab_x = ("font-size" => 14pt, "border-radius" => 3px, "padding" => 4px, "margin-left" => 4px)
-    tab_x_active = Style("a.tabxactive", "color" => "white", "background-color" => "darkred", tab_x ...)
-    tab_x_inactive = Style("a.tabinactive", "color" => "#333333", "background-color" => "lightgray", tab_x ...)
-    left_menu_elements = Style("div.menuitem", "width" => 90percent, "border-bottom" => "2px solid #333333", 
-    "margin-left" => 5percent, "padding" => 8px, "margin-top" => 20px)
+    tab_x_active = Style("a.tabxactive", "color" => "white", "background-color" => "darkred", "font-family" => "storycan", tab_x ...)
+    tab_x_inactive = Style("a.tabinactive", "color" => "#333333", "background-color" => "lightgray", "font-family" => "storycan", "padding" => 9px, tab_x ...)
+    left_menu_elements = Style("div.menuitem", "width" => 100percent, "padding" => 8px)
     main_menus = Style("a.mainmenulabel", "font-size" => 18pt, "font-weight" => "bold", 
     "display" => "inline-block", "opacity" => 100percent, "transition" => 400ms)
     menu_holder = Style("div.mmenuholder", "width" => 8percent, "z-index" => 2, "transition" => 800ms, 
@@ -125,7 +124,7 @@ function generate_tabbar(c::AbstractConnection, client::DocClient)
     [begin
         labelname = join(split(tab.name, "-")[2:3], " | ")
         tablabel = a("labeltab$(tab.name)", text = "$labelname")
-        closetab = a("closetab$(tab.name)", text = "x", class = "tabxinactive")
+        closetab = a("closetab$(tab.name)", text = "<", class = "tabxinactive")
         taba = div("tab$(tab.name)", class = "tabinactive")
         style!(taba, "display" => "inline-block")
         push!(taba, tablabel, closetab)
@@ -164,23 +163,63 @@ end
 function build_leftmenu(c::AbstractConnection, mod::DocModule)
     items = build_leftmenu_elements(c, mod)
     left_menu::Component{:div} = div("left_menu", children = items)
-    style!(left_menu, "width" => 20percent, "height" => 80percent, "background-color" => "darkgray", "border-bottom-left-radius" => 5px, 
-    "padding" => 15px)
+    style!(left_menu, "width" => 20percent, "height" => 80percent, "background-color" => "darkgray", "border-bottom-left-radius" => 5px)
     left_menu::Component{:div}
 end
 
 function build_leftmenu_elements(c::AbstractConnection, mod::DocModule)
+    modcolor::String = mod.color
     [begin 
         pagename = page.name
+        pagesrc::String = page[:text]
+        headings = Vector{Int64}()
+        lvls::Tuple{Char, Char, Char} = ('1', '2', '3')
+        pos::Int64 = 1
+        headings = Vector{AbstractComponent}()
+        e::Int64 = 1
+        while true
+            nexth = findnext("<h", pagesrc, pos)
+            if isnothing(nexth)
+                break
+            end
+            lvl = pagesrc[maximum(nexth) + 1]
+            if ~(lvl in lvls)
+                pos = maximum(nexth) + 2
+                continue
+            end
+            nd = findnext(">", pagesrc, maximum(nexth))[1]
+            eotext = findnext("</h", pagesrc, nd)
+            if isnothing(eotext)
+                pos = maximum(nexth) + 2
+                continue
+            end
+            txt = pagesrc[nd + 1:minimum(eotext) - 1]
+            txtlen = length(txt)
+            nwcomp = Component{Symbol("h$lvl")}("$pagename-$e", text = txt)
+            nwcompsrc = string(nwcomp)
+            pagesrc = pagesrc[1:minimum(nexth) - 1] * nwcompsrc * pagesrc[maximum(eotext) + 3:length(pagesrc)]
+            men = div("page-$pagename-$e", align = "left", class = "menuitem")
+            pos = maximum(eotext) + (length(nwcompsrc) - txtlen) + 1
+            e += 1
+            labela = a("label-$pagename", text = txt)
+            style!(labela, "font-size" => 13pt, "font-weight" => "bold", "color" => "#333333")
+            push!(men, labela)
+            style!(men, "background-color" => "white", "border-left" => "$(parse(Int64, lvl) * 2)px solid $(modcolor)")
+            push!(headings, men)
+        end
+        page[:text] = pagesrc
         openbutton = button("open-$pagename", text = "d")
-        style!(openbutton, "border" => 0px, "border-radius" => 2px, "font-size" => 16pt, "background" => "transparent", 
+        style!(openbutton, "border" => 0px, "border-radius" => 2px, "font-size" => 17pt, "background" => "transparent", 
         "color" => "#333333")
         labela = a("label-$pagename", text = replace(pagename, "-" => " "))
         style!(labela, "font-size" => 13pt, "font-weight" => "bold", "color" => "#333333")
+        pageover = div("pageover", align = "left")
         pagemenu = div("pagemenu-$pagename", align = "left", class = "menuitem")
-        style!(pagemenu, "background-color" => mod.color)
+        submenu = div("submenu", children = headings)
+        style!(pagemenu, "background-color" => modcolor, "border-bottom" => "2px solid #333333")
         push!(pagemenu, labela, openbutton)
-        pagemenu::Component{:div}
+        push!(pageover, pagemenu, submenu)
+        pageover::Component{:div}
 end for page in mod.pages]::Vector{<:AbstractComponent}
 end
 

@@ -6,6 +6,7 @@ Make sure to only export components, interpolate by name into markdown using $, 
 ==#
 module ChifiDocComponents
 using Toolips
+using ChifiDocs
 using ToolipsSession
 using Gattino
 

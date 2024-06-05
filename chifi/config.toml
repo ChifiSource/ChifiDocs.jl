@@ -6,7 +6,7 @@ icon = "/ecosystems/chifi.png"
 [chifi.ChifiDocs]
 path = "chifi/ChifiDocs"
 color = "#FDB0C0"
-pages = ["welcome", "welcome.md"]
+pages = ["welcome", "welcome.md", "creating documentation", "creating docs.md", "internals", "internals.md"]
 
 [parametric]
 color = "#333333"
