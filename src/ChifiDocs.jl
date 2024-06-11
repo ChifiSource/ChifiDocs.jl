@@ -4,7 +4,7 @@ which allows us to build custom components into our markdown documentation pages
 Make sure to only export components, interpolate by name into markdown using $, and in Julia using `interpolate!` or `interpolate_code!`.
 `$`.
 ==#
-module ChifiDocComponents
+module ChifiDocs
 using Toolips
 using ChifiDocs
 using ToolipsSession

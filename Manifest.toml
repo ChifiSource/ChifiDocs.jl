@@ -2,7 +2,7 @@
 
 julia_version = "1.10.3"
 manifest_format = "2.0"
-project_hash = "48f4677d56b4dd6b30804d9b251d9d2563d6d3d6"
+project_hash = "da9ec09de200e988bad8fd3c22fae794fb4a5ba3"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -18,12 +18,6 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 git-tree-sha1 = "2dc09997850d68179b69dafb58ae806167a32b1b"
 uuid = "d1d4a3ce-64b1-5f1a-9ba4-7e7e69966f35"
 version = "0.1.8"
-
-[[deps.ChifiDocs]]
-deps = ["OliveHighlighters", "Revise", "TOML", "Toolips", "ToolipsServables", "ToolipsSession"]
-path = ".."
-uuid = "4e841206-9f20-48d9-9ddd-dfd252355962"
-version = "0.1.0"
 
 [[deps.CodeTracking]]
 deps = ["InteractiveUtils", "UUIDs"]
@@ -55,6 +49,12 @@ uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 [[deps.Distributed]]
 deps = ["Random", "Serialization", "Sockets"]
 uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+
+[[deps.Documator]]
+deps = ["OliveHighlighters", "Revise", "TOML", "Toolips", "ToolipsServables", "ToolipsSession"]
+path = "../Documator"
+uuid = "4e841206-9f20-48d9-9ddd-dfd252355962"
+version = "0.1.0"
 
 [[deps.Downloads]]
 deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
@@ -165,7 +165,7 @@ version = "1.2.0"
 
 [[deps.OliveHighlighters]]
 deps = ["ToolipsServables"]
-path = "../../../olive/OliveHighlighters"
+path = "../../olive/OliveHighlighters"
 uuid = "f769160f-f39a-4920-b1de-ba699e2d8893"
 version = "0.1.0"
 
@@ -270,15 +270,19 @@ version = "0.2.0"
 
 [[deps.ToolipsServables]]
 deps = ["Base64", "Markdown"]
-git-tree-sha1 = "4913d8fdb9c11a2f3e10ca050a04c44e71e2c597"
+git-tree-sha1 = "f2d955234bc505210c356189a95f30736660f3ff"
+repo-rev = "Unstable"
+repo-url = "https://github.com/ChifiSource/ToolipsServables.jl.git"
 uuid = "bf3a9e68-ca66-4981-8178-9d71c4f8abaa"
-version = "0.1.5"
+version = "0.1.6"
 
 [[deps.ToolipsSession]]
-deps = ["Dates", "Test", "Toolips", "ToolipsServables"]
-path = "../../../toolips/ToolipsSession.jl"
+deps = ["Dates", "Toolips"]
+git-tree-sha1 = "c7262bb3e5151215a52bd508099096605a918ce4"
+repo-rev = "Unstable"
+repo-url = "https://github.com/ChifiSource/ToolipsSession.jl.git"
 uuid = "2fe55384-55bc-4df3-9d59-c817d405cd05"
-version = "0.3.5"
+version = "0.4.1"
 
 [[deps.TranscodingStreams]]
 git-tree-sha1 = "5d54d076465da49d6746c647022f3b3674e64156"
