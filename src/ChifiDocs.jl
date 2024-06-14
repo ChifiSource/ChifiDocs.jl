@@ -16,13 +16,22 @@ using ChifiDocs
 using ToolipsSession
 using Gattino
 
-module Chifi
+"""
+#### chifi !
+##### an open source software dynasty
+"""
+function chifi end
 
-end
+"""
+---
+## chifi 'End-User License-Agreement'
+---
+"""
+function EULA end
 
 """
 ### this sample was retrieved!
 """
 function sample end
-export ChifiDocs, sample
+export ChifiDocs, sample, Toolips, chifi, EULA
 end

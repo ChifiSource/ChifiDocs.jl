@@ -6,7 +6,7 @@ icon = "/ecosystems/chifi.png"
 [chifi.ChifiDocs]
 path = "chifi/ChifiDocs"
 color = "#FDB0C0"
-pages = ["welcome", "welcome.md"]
+pages = ["welcome", "welcome.md", "chifi", "chifi.md"]
 
 [parametric]
 color = "#333333"
@@ -24,8 +24,8 @@ icon = "/ecosystems/toolips.png"
 
 [toolips.Toolips]
 path = "toolips/Toolips"
-color = "#1E3F66"
-pages = ["getting-started", "firstoverview.md"]
+color = "#adc2c9"
+pages = ["getting-started", "firstoverview.md", "responses", "the_response.md", "extensions", "extensions.md"]
 
 [toolips.ToolipsSession]
 path = "toolips/ToolipsSession"
