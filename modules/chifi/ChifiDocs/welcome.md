@@ -18,8 +18,15 @@ We are currently targeting the creation of **6** powerful ecosystems for Julia. 
 ### parametric
 The `parametric` ecosystem provides a few entirely random packages with a heavy focus on extensibility through parameters. For instance, `ParametricProcesses` provides the `Worker` data-type, which can be assigned to tasks for incredibly high-level parallel computing with a `ProcessManager`. These packages often act as stubs, from which other projects are build features on top of. For instance, `Toolips` uses `ParametricProcesses` for multi-threading, and `Olive` uses `IPyCells` for multi-typed cells.
 ### toolips
-`Toolips` is a declarative full-stack web-development framework centered around extensibility.
+`Toolips` is a declarative full-stack web-development framework centered around extensibility. `Toolips` uses a combination of type parameters and `Module` introspection to create extensible web-development. Through extensions, `Toolips` then facilitates the *vast majority* of web-development needs -- from full-stack web-applications using `ToolipsSession` to simple APIs which just use `Toolips`, even UDP servers which utilize `ToolipsUDP`. `toolips`, alongside its ecosystem of extensions, is capable of creating some pretty awesome software -- including this website!
 ### gattino
+`Gattino` is a `Toolips`-based visualization library for Julia which inhibits the same methodology as `Toolips`. The module centers around composability, extensibility, and ease-of-use. `Gattino` is capable of creating **elegant** visualizations, of which every part may be edited.
+\
+
+`gattino-scatter`
+
+\
+
 ### olive
 ## licensing
 - All `chifi` software is distributed with the `MIT-0` *ultra-permissive* software license. You are free to do *whatever you want* with `chifi` software, for example you could copy `Toolips` and distribute or modify it without [attribution](https://en.wikipedia.org/wiki/Attribution_(marketing)) or **any other requirements**.
