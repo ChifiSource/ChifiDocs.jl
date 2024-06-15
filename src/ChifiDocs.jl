@@ -11,7 +11,9 @@ chifi docs is a documentation site for `chifi` software created using `Documator
 
 """
 module ChifiDocs
+using Documator
 using Toolips
+using Toolips.ToolipsServables
 using ChifiDocs
 using ToolipsSession
 using Gattino
@@ -33,5 +35,12 @@ function EULA end
 ### this sample was retrieved!
 """
 function sample end
-export ChifiDocs, sample, Toolips, chifi, EULA
+
+components = Vector{AbstractComponent}()
+
+eula_raw = @doc EULA
+
+EULA_comp = tmd("chifi-EULA", string(eula_raw))
+push!(components, EULA_comp)
+export ChifiDocs, sample, Toolips, chifi, EULA, components
 end
