@@ -2,7 +2,7 @@
 
 julia_version = "1.10.3"
 manifest_format = "2.0"
-project_hash = "da9ec09de200e988bad8fd3c22fae794fb4a5ba3"
+project_hash = "2fc94e4bab862c5318a9dafc6f860eba5c3a3ee4"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -18,6 +18,11 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 git-tree-sha1 = "2dc09997850d68179b69dafb58ae806167a32b1b"
 uuid = "d1d4a3ce-64b1-5f1a-9ba4-7e7e69966f35"
 version = "0.1.8"
+
+[[deps.CarouselArrays]]
+git-tree-sha1 = "cbabce68aa47c80c646e86023c215b92d46b7661"
+uuid = "728b0f75-d1ac-44d2-96e7-73f1be4eca2f"
+version = "0.1.0"
 
 [[deps.CodeTracking]]
 deps = ["InteractiveUtils", "UUIDs"]
@@ -76,11 +81,25 @@ git-tree-sha1 = "444fbab09a72c589a900463837e2bbf6218471db"
 uuid = "f0fb3ee5-f608-41f3-a42d-dac276373afc"
 version = "0.1.1"
 
+[[deps.GattinoPleths]]
+deps = ["Gattino"]
+git-tree-sha1 = "f27fd80e6dc377aa4ee0d0f41e5fd05fd19f90ac"
+repo-rev = "main"
+repo-url = "https://github.com/ChifiSource/GattinoPleths.jl"
+uuid = "9f033946-9ab4-431a-b842-48f7db4940ab"
+version = "0.1.0"
+
 [[deps.HTTP]]
 deps = ["Base64", "CodecZlib", "ConcurrentUtilities", "Dates", "ExceptionUnwrapping", "Logging", "LoggingExtras", "MbedTLS", "NetworkOptions", "OpenSSL", "Random", "SimpleBufferStream", "Sockets", "URIs", "UUIDs"]
 git-tree-sha1 = "d1d712be3164d61d1fb98e7ce9bcbc6cc06b45ed"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 version = "1.10.8"
+
+[[deps.IPyCells]]
+deps = ["JSON", "Random"]
+git-tree-sha1 = "e819b0d814ad86f0b6edbd52278fe6f5660c7fec"
+uuid = "f2c63c6a-782d-45ad-850e-588fc6f0abf6"
+version = "0.1.1"
 
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
@@ -91,6 +110,12 @@ deps = ["Artifacts", "Preferences"]
 git-tree-sha1 = "7e5d6779a1e09a36db2a7b6cff50942a0a7d0fca"
 uuid = "692b3bcd-3c85-4b1f-b108-f13ce0eb3210"
 version = "1.5.0"
+
+[[deps.JSON]]
+deps = ["Dates", "Mmap", "Parsers", "Unicode"]
+git-tree-sha1 = "31e996f0a15c7b280ba9f76636b3ff9e2ae58c9a"
+uuid = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+version = "0.21.4"
 
 [[deps.JuliaInterpreter]]
 deps = ["CodeTracking", "InteractiveUtils", "Random", "UUIDs"]
@@ -155,6 +180,9 @@ deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
 version = "2.28.2+1"
 
+[[deps.Mmap]]
+uuid = "a63ad114-7e13-5084-954f-fe012c677804"
+
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 version = "2023.1.10"
@@ -192,10 +220,22 @@ git-tree-sha1 = "1447a5c2febeedc849be3223f8390c111468cf8f"
 uuid = "9ce9415f-ecd2-4b63-a3f6-984ce63e76ce"
 version = "0.1.0"
 
+[[deps.Parsers]]
+deps = ["Dates", "PrecompileTools", "UUIDs"]
+git-tree-sha1 = "8489905bcdbcfac64d1daa51ca07c0d8f0283821"
+uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
+version = "2.8.1"
+
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 version = "1.10.0"
+
+[[deps.PrecompileTools]]
+deps = ["Preferences"]
+git-tree-sha1 = "5aa36f7049a63a1528fe8f7c3f2113413ffd4e1f"
+uuid = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
+version = "1.2.1"
 
 [[deps.Preferences]]
 deps = ["TOML"]
@@ -257,10 +297,10 @@ deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[deps.Toolips]]
-deps = ["Crayons", "HTTP", "ParametricProcesses", "Pkg", "Sockets", "ToolipsServables"]
-git-tree-sha1 = "bdfe0e17c4bb4965d4325cc10ae6999e652a9846"
+deps = ["Crayons", "HTTP", "Markdown", "ParametricProcesses", "Pkg", "Sockets", "Test", "ToolipsServables"]
+path = "../../toolips/Toolips.jl"
 uuid = "a47e2ad8-fcf7-417c-9746-32b9bdf220bd"
-version = "0.3.2"
+version = "0.3.0"
 
 [[deps.ToolipsSVG]]
 deps = ["ToolipsServables"]
@@ -275,12 +315,16 @@ uuid = "bf3a9e68-ca66-4981-8178-9d71c4f8abaa"
 version = "0.1.6"
 
 [[deps.ToolipsSession]]
-deps = ["Dates", "Toolips"]
-git-tree-sha1 = "c7262bb3e5151215a52bd508099096605a918ce4"
-repo-rev = "Unstable"
-repo-url = "https://github.com/ChifiSource/ToolipsSession.jl.git"
+deps = ["Dates", "Test", "Toolips", "ToolipsServables"]
+path = "../../toolips/ToolipsSession.jl"
 uuid = "2fe55384-55bc-4df3-9d59-c817d405cd05"
-version = "0.4.1"
+version = "0.3.5"
+
+[[deps.ToolipsUDP]]
+deps = ["Toolips"]
+path = "../../toolips/ToolipsUDP.jl"
+uuid = "c24f5779-9d3b-4059-90d7-a34104ea6889"
+version = "0.1.0"
 
 [[deps.TranscodingStreams]]
 git-tree-sha1 = "a947ea21087caba0a798c5e494d0bb78e3a1a3a0"

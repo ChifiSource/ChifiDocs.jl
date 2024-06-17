@@ -1,0 +1,17 @@
+[emmaccode]
+name = "emmac"
+ecosystems = ["chifi", "parametric", "toolips", "gattino"]
+[Keno]
+name = "Keno Fischer"
+ecosystems = ["toolips"]
+[fonsp]
+name = "Fons van der Plas"
+ecosystems = []
+
+[UnformalPenguin]
+name = "Penguin"
+ecosystems = ["toolips"]
+
+[braamvandyk]
+name = "Braam van Dyk"
+ecosystems = []

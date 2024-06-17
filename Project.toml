@@ -4,10 +4,15 @@ authors = ["emmac "]
 version = "0.1.0"
 
 [deps]
+CarouselArrays = "728b0f75-d1ac-44d2-96e7-73f1be4eca2f"
 Documator = "4e841206-9f20-48d9-9ddd-dfd252355962"
 Gattino = "f0fb3ee5-f608-41f3-a42d-dac276373afc"
+GattinoPleths = "9f033946-9ab4-431a-b842-48f7db4940ab"
+IPyCells = "f2c63c6a-782d-45ad-850e-588fc6f0abf6"
 Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 Toolips = "a47e2ad8-fcf7-417c-9746-32b9bdf220bd"
+ToolipsSVG = "8ae86ec9-919d-4ece-9a6d-09b7d28dae11"
 ToolipsServables = "bf3a9e68-ca66-4981-8178-9d71c4f8abaa"
 ToolipsSession = "2fe55384-55bc-4df3-9d59-c817d405cd05"
+ToolipsUDP = "c24f5779-9d3b-4059-90d7-a34104ea6889"

@@ -6,7 +6,17 @@ icon = "/ecosystems/chifi.png"
 [chifi.ChifiDocs]
 path = "chifi/ChifiDocs"
 color = "#FDB0C0"
-pages = ["welcome", "welcome.md", "chifi", "chifi.md"]
+pages = ["welcome", "welcome.md"]
+
+[chifi.Documator]
+path = "chifi/Documator"
+color = "#6682E0"
+pages = []
+
+[chifi.CarouselArrays]
+path = "chifi/CarouselArrays"
+color = "#B3438F"
+pages = []
 
 [parametric]
 color = "#333333"
@@ -14,7 +24,13 @@ txtcolor = "white"
 icon = "/ecosystems/parametric.png"
 
 [parametric.ParametricProcesses]
+path = "parametric/ParametricProcesses"
 color = "#75B2C8"
+txtcolor = "white"
+
+[parametric.IPyCells]
+path = "parametric/IPyCells"
+color = "#001400"
 txtcolor = "white"
 
 [toolips]
@@ -22,24 +38,35 @@ color = "#75B2C8"
 txtcolor = "white"
 icon = "/ecosystems/toolips.png"
 
+[toolips.ToolipsServables]
+path = "toolips/ToolipsServables"
+color = "#5C73D0"
+
 [toolips.Toolips]
 path = "toolips/Toolips"
 color = "#adc2c9"
-pages = ["getting-started", "firstoverview.md", "responses", "the_response.md", "extensions", "extensions.md"]
 
 [toolips.ToolipsSession]
 path = "toolips/ToolipsSession"
 color = "#FF4F4B"
-pages = []
+
+[toolips.ToolipsSVG]
+path = "toolips/ToolipsSVG"
+color = "#723176"
+
+[toolips.ToolipsUDP]
+path = "toolips/ToolipsUDP"
+color = "#D2B752"
 
 [gattino]
 color = "#C178B5"
-txtcolor = "#333333"
+txtcolor = "white"
 icon = "/ecosystems/gattino.png"
 
 [gattino.Gattino]
 path = "gattino/Gattino"
-color = ""
-pages = []
+color = "#2A0134"
 
-
+[gattino.GattinoPleths]
+path = "gattino/GattinoPleths"
+color = "#FF7F7F"
