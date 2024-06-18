@@ -493,8 +493,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-##### article V: Licensee Rights
-
+##### article V: Licensor Rights
+In providing data to CHIFI - AN OPEN SOURCE SOFTWARE DYNASTY, THE CLIENT licenses that data to CHIFI - AN OPEN SOURCE SOFTWARE DYNASTY without restriction. 
+CHIFI - AN OPEN SOURCE SOFTWARE DYNASTY reserves the right to terminate or mutate this data accordingly. THe Licensor must be formal and precise with THE CLIENT
+in what data they are collecting. While the content creator retains the rights and permissions for the data, the license provided to CHIFI to distribute the content is *non-fungible*.
 """
 function EULA end
 
@@ -508,6 +510,28 @@ components = Vector{AbstractComponent}()
 
 gat_scat = Gattino.scatter(randn(50), randn(50), xlabel = "randn()", ylabel = "randn()", title = "random numbers").window
 eula_raw = @doc EULA
+
+mutable struct ChifiLinkData
+   img::String
+   name::String
+   href::String
+end
+lds = Vector{ChifiLinkData}()
+push!(lds, ChifiLinkData("https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png", "chifi on github", 
+"https://github.com/ChifiSource"), ChifiLinkData("/ecosystems/chifi.png", "chifi.dev", "https://chifi.dev"))
+
+links = div("chifi-links", children = [begin
+   mainbox = a(href = linkdata.href)
+   style!(mainbox, "padding" => 4px, "display" => "inline-block", "border" => "2px solid #333333", 
+   "cursor" => "pointer")
+   maintag = span(text = linkdata.name)
+   style!(maintag, "color" => "#333333", "font-size" => 12pt)
+   image = img(src = linkdata.img, width = 19px)
+   push!(mainbox, image, maintag)
+   mainbox
+end for linkdata in lds])
+
+
 
 function build_collaborators(ecotags::Vector)
     srcdir = @__DIR__
@@ -583,6 +607,6 @@ end
 
 gat_scat.name = "gattino-scatter"
 EULA_comp = tmd("chifi-EULA", string(eula_raw))
-push!(components, EULA_comp, gat_scat)
+push!(components, EULA_comp, gat_scat, links)
 export ChifiDocs, sample, Toolips, chifi, EULA, components
 end

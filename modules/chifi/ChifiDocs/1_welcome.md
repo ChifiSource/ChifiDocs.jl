@@ -6,10 +6,10 @@
     <h3>chifi docs</h3>
 </div>
 ```
-welcome to chifi docs! The **new** *interactive* `chifi` documentation website. This is a centralized source for accessing information on all **6** `chifi` ecosystems. More ecosystems will be coming to this website as they become available.
+welcome to chifi docs! The **new** *interactive* `chifi` documentation website. This is a centralized source for accessing information on all **6** `chifi` ecosystems. 
 #### links
-- [chifi on github](https://github.com/ChifiSource)
-- [chifi blog](https://chifi.dev/)
+`chifi-links`
+
 ---
 ## overview
 `chifi` itself is an ecosystem, consisting of **chifi websites** (`CC BY 4.0`/`MIT-0`), **chifi servers** (`MIT-0`), 
@@ -24,7 +24,6 @@ We are currently targeting the creation of **6** powerful ecosystems for Julia. 
 ## info
 `chifi` is a *loosely organized* group of collaborators building new and exciting software ecosystems for the `julia` programming language and `GNU-Linux`-based operating systems. This is *not* an **enterprise**, " business", or *venture* but a connecting web between independent developers with similar goals. Everything that we make is for the *people of earth* to enjoy and holds an open license.
 ### collaborators
-- contributors to `chifi` projects!
 `chifi-collaborators`
 
 ---
@@ -32,7 +31,3 @@ We are currently targeting the creation of **6** powerful ecosystems for Julia. 
 - All `chifi` software is distributed with the `MIT-0` *ultra-permissive* software license. You are free to do *whatever you want* with `chifi` software, for example you could copy `Toolips` and distribute or modify it without [attribution](https://en.wikipedia.org/wiki/Attribution_(marketing)) or **any other requirements**.
 - `chifi` *content* is published under the `Creative-Commons BY 4.0` (*creative commons with attribution*) license. For `chifi` images, documents, and web-pages, we require [attribution](https://en.wikipedia.org/wiki/Attribution_(marketing)), but you are free to use them however you want so long as that attribution is provided. Note the distinction between *webpage* and *software* here -- you are not allowed to deploy `ChifiDocs` by itself, but you could use `ChifiDocs` or `Documator` to create **your own** website and freely distribute this. By using `chifi` documentations and websites, you agree to the `EULA` (*End User License Agreement*).
 `chifi-EULA`
-
----
-#### documator
-This documentation website is powered by `Documator`, a `Toolips`-based documentation generator for julia packages. This allows for a lot of enhanced capabilities when it comes to creating documentation. If you would like to learn more about using this package to generate your own documentation, check out the `chifi/Documator` section.

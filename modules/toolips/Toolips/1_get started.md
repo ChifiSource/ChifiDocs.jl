@@ -1,12 +1,9 @@
 #### toolips
 - **a manic web-development framework**
 
-`toolips` is a software ecosystem that targets the full scope of web-development; from the most basic of APIs to *complex* full-stack applications. The goal of this project is to solve the *two-language problem* as it pertains to web-development. In normal circumstances, a data-driven website consists of two to three applications;
-- the *front-end*, client-side JavaScript,
-- the *back-end*, server-side JavaScript,
-- and the *data back-end*, server-side statistical language.
+`toolips` is a software ecosystem that targets the full scope of web-development; from the most basic of APIs to *complex* full-stack applications. The goal of this project is to solve the *two-language problem* as it pertains to web-development -- allowing all web-development to take place in one Scientific programming language.
 
-With `Toolips`, each of these applications' goals are facilitated by `Toolips` alongside its `toolips` extension ecosystem, eliminating the need for other languages or servers. In addition to targeting a broad range of capabilities, the package also targets *minimalism* at its base -- opting to load features via extensions as they are requested. Finally, `Toolips` also utilizes a declarative `export` and routing syntax, alongside the high-level `ToolipsServables` templating syntax.
+---
 # development environment
 To get started with `Toolips`, you will need to add the package to an environment with `Pkg`.
 ```julia
@@ -39,7 +36,6 @@ end
 export main, start!
 end
 ```
----
 From here, we simply `use` the server and then `start!` it.
 ```julia
 using Main.ExampleServer
@@ -53,7 +49,8 @@ ip = "127.0.0.1":8000
 ```julia
 start!(ExampleServer, "127.0.0.1":9000)
 ```
-Though a file-system is not required, it may be easier to start from a base project. For this, we may use `Toolips.new_app`. 
+Though a file-system is not required, it may be easier to start from a base project and utilize a file-system or `Pkg` environment. 
+For this, we may use `Toolips.new_app`, which takes a `String` an 
 - Note that other extensions with other types of servers, such as `ToolipsUDP`, may have a different `new_app` and `start!` binding.
 ```julia
 using Toolips; Toolips.new_app("MyToolipsApp")
