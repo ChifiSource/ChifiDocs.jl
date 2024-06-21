@@ -605,8 +605,15 @@ function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
     start!(Documator, ip)
 end
 
+function reload!()
+   docloader = Documator.docloader
+    docloader.docsystems = Documator.read_doc_config(docloader.dir, ChifiDocs)
+    ecotags = build_ecotags(docloader.docsystems)
+    Documator.load_docs!(ChifiDocs, docloader)
+end
+
 gat_scat.name = "gattino-scatter"
 EULA_comp = tmd("chifi-EULA", string(eula_raw))
 push!(components, EULA_comp, gat_scat, links)
-export ChifiDocs, sample, Toolips, chifi, EULA, components
+export ChifiDocs, sample, Toolips, chifi, EULA, components, reload!
 end
