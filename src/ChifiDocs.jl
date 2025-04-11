@@ -598,11 +598,11 @@ end
 function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
     docloader = Documator.docloader
     docloader.dir = path
-    docloader.docsystems = Documator.read_doc_config(path, ChifiDocs)
+    docloader.docsystems, docloader.homename = Documator.read_doc_config(path, ChifiDocs)
     ecotags = build_ecotags(docloader.docsystems)
     push!(components,  build_collaborators(ecotags), ecotags ...)
     Documator.load_docs!(ChifiDocs, docloader)
-    start!(Documator, ip)
+    start!(Documator, ip, router_type = Documator.DocRoute)
 end
 
 function reload!()
