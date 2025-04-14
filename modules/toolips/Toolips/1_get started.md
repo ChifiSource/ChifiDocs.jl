@@ -1,17 +1,35 @@
-#### toolips
+## toolips
 - **a manic web-development framework**
 
 `toolips` is a software ecosystem that targets the full scope of web-development; from the most basic of APIs to *complex* full-stack applications. The goal of this project is to solve the *two-language problem* as it pertains to web-development -- allowing all web-development to take place in one Scientific programming language. The head of this ecosystem is the `Toolips` 
 web-development framework -- a web-development framework designed with extensibility and flexibility in mind. 
 
 For example, `Toolips` offers fullstack callbacks through the `ToolipsSession` extension, enhanced SVG capabilities through the `ToolipsSVG` extension, and UDP servers through the `ToolipsUDP` extension.
-```docstrings
-Toolips
-```
+Julia, unlike JavaScript, does not easily run inside of a web-browser on the client side — so our Julia code is entirely server-side and servers like this are typically associated with back-end projects. 
+Toolips is capable of far more than the average framework with extensions, and this includes full-stack development, so with this particular web-framework we are able to manage the front-end from the back-end.
+Alongside full-stack web-development, Toolips includes a plethora of alluring features:
+- HTTPS capable Can be deployed with SSL.
+- Extensible server platform.
+- Hyper-Dynamic Multiple-Dispatch Routing — The Toolips router can be completely reworked with extensions to offer completely new and exceedingly versatile functionality.
+- Declarative and composable — files, html, Javascript, and CSS templating syntax provided by ToolipsServables.
+- Modular servers — toolips applications are regular Julia Modules, making them easier to migrate and deploy.
+- Versatilility — toolips can be used for all use-cases, from full-stack web-development to simple endpoints.
+- Parallel Computing — Declarative process management provided by parametric processes.
+- Optionally Asynchronous — the Toolips.start! function provides several different modes to start the server in, including asynchronous, single-threaded, and multi-threaded.
+- Multi-Threaded — Toolips has support for high-level multi-threading through the `ParametricProcesses` Module
 
----
-# development environment
-To get started with `Toolips`, you will need to add the package to an environment with `Pkg`.
+Toolips is able to create …
+
+- Endpoints
+- File servers
+- Interactive fullstack web applications (using the ToolipSession extension)
+- Other HTTP or TCP servers (e.g. Proxy server, data-base cursor)
+- UDP servers and web-services services (e.g. Systems servers, DNS servers) (using the `ToolipsUDP` extension for UDP.)
+
+Toolips is no ordinary framework; the framework is extensible at every level. There are such particular cases in web-development, it is such a versatile application that we need a versatile framework. For instance, by writing new methods for the route! function in Toolips we can write a custom router that, for example, writes a unique profile for each user based on their URL — so we never have to register a route for each individual profile. I also used a similar technique to create a proxy server.
+- `Toolips` requires **julia**. Get Julia [here](https://julialang.org/)
+## development environment
+To get started with `Toolips` from Julia, you will need to add the package to an environment with `Pkg`.
 ```julia
 using Pkg
 
@@ -19,12 +37,13 @@ using Pkg
 Pkg.add("Toolips")
 
 # latest working:
-Pkg.add("Toolips", rev = "stable")
+Pkg.add(name = "Toolips", rev = "stable")
 
 # latest dev:
-Pkg.add("Toolips", rev = "Unstable")
+Pkg.add(name = "Toolips", rev = "Unstable")
 ```
-`Toolips` servers only require a `Module` to run, not a file-system -- so we can start a server from any `Module` with `Toolips.start!`. 
+## server modules
+`Toolips` servers only require a `Module` to run, not a file-system -- we can start a server from any `Module` with `Toolips.start!`. 
 `start!` is provided with a `Module` (your server), an `IP4` (the IP and port to start the server on,) and has the optional key-word arguments `threads` and `router_threads`.
 ```docstrings
 start!
@@ -47,6 +66,15 @@ From here, we simply `use` the server and then `start!` it.
 using Main.ExampleServer
 
 start!(ExampleServer)
+```
+`start!` comes with a number of arguments to consider including the `IP`. The inverse to `start!` is `kill!`.
+```julia
+start!(MyToolipsApp)
+kill!(MyToolipsApp)
+```
+```docstrings
+start!
+kill!
 ```
 An `IP4` is constructed in a relatively pragmatic way...
 ```julia
@@ -88,62 +116,5 @@ end
 export main, default_404, logger
 end # - module MyToolipsApp <3
 ```
-- A `dev.jl` file is provided alongside these projects to automatically start a development server with a simple `include`. This server may be started with `include("dev.jl")`.
-
-
-Note the **export of `default_404`**. `default_404` is routed to `404` (try `Toolips.default_404.path`). to replace this response page simply make a new route with the `404` path and **export** it. `default_404` will automatically be used on servers without a `404` route, so routing this is not entirely necessary.
-```julia
-start!(MyToolipsApp)
-kill!(MyToolipsApp)
-```
-After using `start!` we can use `kill!` on the `Module` to kill the server:
-```docstrings
-kill!
-```
----
-# routing
-```docstrings
-AbstractRoute
-```
-`Toolips` features a dynamic three-stage routing system that can change functionality using parametric polymorphism. Two main functions comprise this routing system, `route` and `route!`. `route` is called to create routes, whereas `route!` is called by the server and routes the incoming `Connection` to a `route`. A standard `Route` is created using the `route` function, which will take a `Function` as the first positional argument and a route as the second.
-```julia
-home = route("/") do c::Connection
-
-end
-```
-The provided `Function` will take one positional argument, an `AbstractConnection`. A standard `Toolips` route will hold the `Connection` type in a type parameter. The call above will return a `Route{Connection}`. 
-```docstrings
-route
-```
-## the connection
-A route will be passed a `Connection` whenever it is routed with `route!`. A `Connection` represents a client's entrance into the `Function` pipeline -- each time a request is made to the server. The `Connection` stores the server's routes in its `Connection.routes` field and the server's data in its `Connection.data` field. 
-```docstrings
-Connection
-```
-The most vital function in association with the `Connection` is `write!`, which is used to write data to the incoming `Connection` as a response. Note that `write!` is not `write`, as this is a mutating `write!` -- a write on a response *cannot* be reverted!
-```docstrings
-write!
-```
-There are also several *getter* methods associated with the `Connection`, which may be used to retrieve data:
-```docstrings
-get_args
-get_ip
-get_post
-get_route
-get_method
-get_parent
-```
-```julia
-module Adder
-using Toolips
-
-addition = route("/") do c::AbstractConnection
-    args = get_args(c)
-    x, y = parse(Int64, args[:x]), parse(Int64, args[:y])
-    write!(c, x + y)
-end
-
-export addition, start!
-end
-```
----
+- A `dev.jl` file is provided alongside these projects to automatically start a development server with a simple `include`. This server may be started with `include("dev.jl")`, or from `Bash` or `Command Prompt` `julia -L dev.jl`.
+- Note the **export of `default_404`**. `default_404` is routed to `404` (try `Toolips.default_404.path`). to replace this response page simply make a new route with the `404` path and **export** it. `default_404` will automatically be used on servers without a `404` route, so this export is reduntant but in place to demonstrate a `404` page.
