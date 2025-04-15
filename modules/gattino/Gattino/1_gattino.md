@@ -1,2 +1,0 @@
-# gattino plots !
-`gattino-scatter`
