@@ -1,3 +1,4 @@
+home = "chifi/ChifiDocs"
 [chifi]
 color = "white"
 txtcolor = "#333333"
@@ -70,3 +71,13 @@ color = "#2A0134"
 [gattino.GattinoPleths]
 path = "gattino/GattinoPleths"
 color = "#FF7F7F"
+
+[olive]
+color = "#FFA7D3"
+txtcolor = "white"
+icon = "/ecosystems/olive.png"
+
+[olive.Olive]
+path = "olive/Olive"
+color = "#FDB0C0"
+pages = ["welcome", "welcome.md"]

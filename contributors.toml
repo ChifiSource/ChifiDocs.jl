@@ -1,16 +1,16 @@
 [emmaccode]
 name = "emmac"
-ecosystems = ["chifi", "parametric", "toolips", "gattino"]
+ecosystems = ["chifi", "parametric", "toolips", "gattino", "olive"]
 [Keno]
 name = "Keno Fischer"
 ecosystems = ["toolips"]
 [fonsp]
 name = "Fons van der Plas"
-ecosystems = []
+ecosystems = ["olive"]
 
 [UnformalPenguin]
 name = "Penguin"
-ecosystems = ["toolips"]
+ecosystems = ["toolips", "olive"]
 
 [braamvandyk]
 name = "Braam van Dyk"
