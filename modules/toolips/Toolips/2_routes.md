@@ -113,19 +113,89 @@ A regular `Component` will take key-word arguments and style pairs. Special amon
 - `:extras` are extra components to be written before the element, as opposed to as a child of the element. This is useful for attaching scripts and other things to components.
 - and `:children` are the children of that element, which will be written inside of it. We add new children by using `push!`, or by providing them as an argument when we construct the `Component`.
 
-A `Component` can also have its style modified using `style!`, and `setindex!`/`getindex!` work to retrieve any of these properties with a `Symbol` or `String`.
+A `Component` can also have its style modified using `style!`, and `setindex!`/`getindex!` work to retrieve any of these properties with a `Symbol` or `String`. There is also `set_children!`.
 ```julia
-# TODO EXAMPLE HERE
+mycomp = h2(text = "hello!")
+mycomp = Component{:h2}(text = "hello")
+style!(mycomp, "font-size" => 12pt, "font-weight" => "bold", "color" => "orange")
+
+mycomp[:text] = mycomp[:text] * " world". 
+
+new_container = div("sample-container", children = [mycomp])
+set_children!(new_container, [mycomp])
+
+push!(new_container, h3(text = "welcome to my julia website"))
 
 ```
-For a more exhaustive overview of the features `ToolipsServables` offers, you can check out the documentation for the package [here](/toolips/ToolipsServables)
+- There is a lot more this templating can do, but this overview will not go too into detail. For a more exhaustive overview of the features `ToolipsServables` offers, you can check out the documentation for the package [here](/toolips/ToolipsServables)
+- Also note the use of *measures* (e.g `pt`) from `ToolipsServables`.
 ## files
+A `File` type is also provided by the `Components` `Module`, and like the `Component` this type may be written directly to the `Connection`. `ToolipsServables` also features the `interpolate!` function for interpolating files of different types. For serving files from routes, `Toolips` includes the `mount` function. `mount` will take a key-value pair, the HTTP target path we want to mount to and the file path to mount. This path can be file or directory; in the case of a directory, this call will return a `Vector{Route}` and in the case of a file it will return a single `Route{Connection}`. Both of these can be exported to be loaded into the server.
+```julia
+module QuickFileServer
+using Toolips
 
+fs = mount("/" => "shared_directory")
+
+export fs
+end
+```
+It is very straightforward, it might also be worth looking into `interpolate!` from `Components`, as well.
 ## multiroute
+Multiroute is a `Toolips` feature that implements multiple dispatch routes for different types of incoming connections. We can create multiple handlers for different cases and the router will handle different incoming connections with the appropriate `AbstractConnection`. The running example for this is the `MobileConnection`.
+```julia
+module MobileFriendlyServer
+using Toolips
+using Toolips.Components
 
+home_n = route("/") do c::AbstractConnection
+    write!(c, h1(text = "desktop user!"))
+end
+
+home_m = route("/") do c::MobileConnection
+    write!(c, h1(text = "mobile user!"))
+end
+
+home = route(home_n, home_m)
+
+export home
+end
+```
+But with `Toolips` extensibility, we could easily implement our own. For example, we could easily implement a `POST` handler using this multiple dispatch technique. For more information on writing `Connection` extensions, check out  the [connection extensions](#connection-extensions) section.
 ## routing extensions
+Routing in Julia goes through a multi-step pipeline in which an extensible function, `route!`, is called three times.
+- 1. `route!` is called on each server extension (<: of `AbstractExtension`) that has a `route!` binding.
+- 2. `route!` is called on the `Vector{<:AbstractRoute}`, routing to the appropriate route.
+- 3. Finally, `route!` is then called directly on a route from the previous binding.
 
+Understanding this routing system allows us to easily change it. In order to change extension behavior each time the server routes, we use the first binding. In order to change the router, we would extend the second option and if we wanted to change what a `Route` does when routed we use the final option. For example, in order to make a hostname router we would use the second and third:
 
+```julia
+using Toolips
+import Toolips: route!
+
+abstract type AbstractHostRoute <: Toolips.AbstractRoute end
+
+mutable struct HostRoute <: AbstractHostRoute
+    path::String
+    link::String
+end
+
+route!(c::AbstractConnection, r::AbstractHostRoute) = begin
+    proxy_pass!(c, r.link)
+end
+
+route!(c::AbstractConnection, vec::Vector{<:AbstractHostRoute}) = begin
+    host = get_host(c)
+    route!(c, vec[host])
+end
+
+main = HostRoute("sample.com", "127.0.0.1:8000")
+
+export main
+end
+```
+For more information on the first dispatch of `route!`, see [creating server extensions](#creating-server-extensions)
 ## connection extensions
 Another way to extend `Toolips` is by adding a `Connection` extension. This takes shape in a new `AbstractConnection`, which will need to have a binding to `write!` (or use the default binding,) and bindings to the `Connection` getter functions. For example, the `IOConnection` comes with `Toolips` and is used to translate client data from the header to the other threads in the `ProcessManager`, so it contains fields for all of this data:
 ```julia
@@ -188,4 +258,6 @@ Then we may start the server:
 ```julia
 start!(MobileFriendlyServer)
 ```
+
+
 
