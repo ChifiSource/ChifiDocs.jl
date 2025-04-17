@@ -10,7 +10,7 @@ start!(mod::Module = Main, ip::IP4 = ip4_cli(Main.ARGS);
 ```
 Understanding the base thread and how it impacts performance is important. Evaluating everything on the base thread will **always** be faster, as we do not need to translate all of the data we are working with over to the other thread, *unless* that thread is already bogged down with a lot of other actions.
 
-**There are some key caveats to multi-threading in Toolips**, at least when it comes to doing so using the router. A `Stream` can only be written to by the `Base` thread. `Toolips` provides a solution to this with the `IOConnection`. This allows for data to be translated back to the base thread and written asynchronously. This means that for multi-threading to work, we will need to annotate our routes with `AbstractConnection`, or some type of converted `Connection` type.
+**There are some key caveats to multi-threading in Toolips**, at least when it comes to doing so using the router. A `Stream` can only be written to by the `Base` thread. `Toolips` provides a solution to this with the `IOConnection`. This allows for data to be translated back to the base thread and written asynchronously. This means that for multi-threading to work, we will need to annotate our routes with `AbstractConnection`, or some type of converted `Connection` type. We *also* need to use a full environment and project for multi-threading to work, otherwise the module and its environment cannot be translated to the other threads. Ensure the website is a regular Julia package, not an in-REPL `Module` -- otherwise you will get an undefined error when a job is distributed.
 
 If all of that is enough, it is also possible to create and distribute processes manually using the `ParametricProcesses` API through the `Connection` or directly. `Toolips` exports the essentials (click to view documentation, and note the `Connection` dispatches added by `Toolips`):
 - `assign!`
@@ -99,10 +99,60 @@ A `ServerExtension` able to change the server's functionality in a few key ways:
 
 Creating your own server extension is straightforward, first we make our `ServerExtension` type,
 ```julia
+module ClientTrackServer
+using Toolips
+
+mutable struct ClientTracker <: Toolips.ServerExtension
+      clients::Vector{String}
+      ClientTracker() = new(Vector{String}())
+end
+
+home = route(Toolips.default_404.page, "/")
+
+TRACKER = ClientTracker()
+
+export TRACKER, home
+end
 ```
 Then we bind it to any `Toolips` functions we want to use (on_start, route!),
 ```julia
+module ClientTrackServer
+using Toolips
+# be sure to import, or you will create `ClientTrackServer.on_start` instead 
+#    of a new `Method`.
+import Toolips: on_start, route!
+
+mutable struct ClientTracker <: Toolips.ServerExtension
+      clients::Vector{String}
+      ClientTracker() = new(Vector{String}())
+end
+
+home = route(Toolips.default_404.page, "/")
+
+TRACKER = ClientTracker()
+
+# our new bindings:
+function on_start(ext::ClientTracker, data::Dict{Symbol, Any}, routes::Vector{<:AbstractRoute})
+      # ensure `clients` is left empty (in case of restart).
+      ext.clients = Vector{String}()
+end
+
+function route!(c::AbstractConnection, ext::ClientTracker)
+      ip = get_ip(c)
+      # check if the client is currently counted:
+      if ~(ip in ext.clients)
+            @info "registering client: $ip"
+            push!(ext.clients, ip)
+      end
+      ip = nothing
+end
+
+
+client_count = route("/clients") do c::AbstractConnection
+      write!(c, length(TRACKER.clients))
+end
+
+export TRACKER, home, client_count
+end
 ```
-and we finish by exporting it in our server `Module`.
-```julia
-```
+and we finish by exporting it in our server `Module`. Note that these bindings are **not necessary** but optional dependent on the desired functionality of the `ServerExtension`.
