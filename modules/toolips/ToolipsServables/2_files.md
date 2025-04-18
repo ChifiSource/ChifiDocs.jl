@@ -19,5 +19,3 @@ end
 ```
 ## interpolation
 With this basic file functionality also comes some interpolation tools for components, files, and combinations of the two. This is exclusively handled using the `interpolate!` and `interpolate!` functions. When interpolating files we use the `interpolate` binding. Our file should have component names and argument names with a `$` before them.`interpolate!` is used for components and allows us to interpolate `code` tags within a `Component{:div}` -- this is created almost exclusively for markdown interpolation with the `tmd` `Component`.
-
-
