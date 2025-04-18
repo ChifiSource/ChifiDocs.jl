@@ -159,7 +159,22 @@ eula_raw = read(DIREC * "/eula.txt", String)
 gat_scat.name = "gattino-scatter"
 EULA_comp = tmd("chifi-EULA", String(eula_raw))
 
+container = begin
+    confirm_button = div("confbutt", text = "confirm")
 
-push!(components, EULA_comp, gat_scat, links)
+    txt = textdiv("maintxt", text = "")
+
+    style!(txt, "padding" => 5px, "border" => "1px solid #1e1e1e", 
+        "display" => "inline-block")
+
+    style!(confirm_button, "padding" => 5px, "cursor" => "pointer", "border" => "1px solid #1e1e1e")
+
+    on(confirm_button, "click") do cl::ClientModifier
+        alert!(cl, cl["maintxt", "text"])
+    end
+    section("containersamp", children = [txt, confirm_button])
+end
+
+push!(components, EULA_comp, gat_scat, links, container)
 export ChifiDocs, this, Toolips, chifi, EULA, components, reload!
 end
