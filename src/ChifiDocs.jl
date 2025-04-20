@@ -29,6 +29,8 @@ using Gattino
 using GattinoPleths
 # olive !
 using Olive
+using Olive.OliveHighlighters
+using OlivePython
 """
 #### chifi !
 ##### an open source software dynasty
@@ -40,9 +42,14 @@ function EULA end
 
 """
 ### this sample was retrieved!
+This sample was grabbed through documentation (`this` is a function) interpolation built into `Documator`!
 """
 function this end
+module AlgebraFrames
 
+end
+
+module Tumble end
 
 components = Vector{AbstractComponent}()
 
