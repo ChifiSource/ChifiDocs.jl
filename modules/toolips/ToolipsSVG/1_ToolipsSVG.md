@@ -1,4 +1,4 @@
-`svgexample`
+`svgheader`
 ## contents
 
 ## svg components

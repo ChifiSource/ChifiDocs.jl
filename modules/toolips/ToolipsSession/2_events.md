@@ -6,6 +6,30 @@ Callbacks are registered `Events`, which we create by calling `on` or `bind` on 
 bind
 on
 ```
+## global events
+It is also possible to bind global events without a `Connection` by calling `on` using the `Session` extension directly. There is a specific section in the `on` documentation dedicated to these dispatches.
+```julia
+# on(f::Function, session::Session, name::String)
+module SampleServer
+using Toolips
+using ToolipsSession
+
+SESSION = ToolipsSession.Session()
+
+# create global event
+on(SESSION, "clickbutton") do cm::ComponentModifier
+    style!(cm, "mainbody", "background-color" => "blue")
+end
+
+home = route("/") do c::AbstractConnection
+    # bind our global event
+    change_button = button("changer", text = "change color")
+    on("clickbutton", change_button, "click")
+    mainbody = body("mainbody", children = [change_button], align = "center")
+    style!(mainbody, "transition" => 5seconds, "padding-top" => 5percent)
+    write!(c, mainbody)
+end
+```
 ## RPC
 Another *really cool* feature that comes packaged in `ToolipsSession` is RPC functionality. For managing RPC sessions, we use the following functions:
 - `open_rpc!` *for creating an RPC session from the current client*
@@ -307,5 +331,33 @@ export main, default_404, logger, SESSION, game
 end # - module Connect4 <3
 ```
 ## input maps
+Another important feature to take note of is the `InputMap`. An `InputMap` is a constructed type that is built to be used with `bind`. `ToolipsSession` provides the following two input maps (click to view documentation):
+- `KeyMap` 
+- and the `SwipeMap`
 
+These will start with a constructor call, making a `KeyMap` or a `SwipeMap`. Then we use `bind` just as we would on a `Connection` on the `InputMap` and then finish by binding the `InputMap` to the `Connection`
+```julia
+using Toolips
+using ToolipsSession
+
+main = route("/") do c::AbstractConnection
+    km = ToolipsSession.KeyMap()
+end
+```
 ## callback bindings
+To add to the extensive list of `Toolips` capabilities, `ToolipsSession` offers some additional callback bindings. Here is a list of the additional bindings provided by `ToolipsSession`:
+- `set_selection!`
+- `pauseanim!`
+- `playanim!`
+- `free_redirects!`
+- `confirm_redirects!`
+- `scroll_to!`
+- `scroll_by!`
+- `next!`
+
+This is in addition to the bindings provided by `Toolips.Components`.
+
+## random component
+`ToolipsSession` (as of right now,) also provides a random `Component`, the `button_select`. This `Component` allows us to make an option selection menu very easily.
+
+This will be moved to [toolips servables](/toolips/ToolipsServables) with the release of `ToolipsSession` `0.5`.
