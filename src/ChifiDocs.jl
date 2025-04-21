@@ -33,7 +33,13 @@ using Olive.OliveHighlighters
 using OlivePython
 """
 #### chifi !
-##### an open source software dynasty
+- What on Earth is a 'chifi'?
+
+`chifi`, pronounced "kai-fie", is an open-source software organization dedicated to bringing unique 
+and compelling ecosystems and tools to the Julia language primarily centered around 
+**data-driven** web-development. Anyone and everyone can be and is part of "kai-fie" though our list of 
+*code*-based collaborators is rather small. Our goal is to push and educate more to collaborate and create 
+while also creating some pretty awesome tools for our favorite programming language (Julia).
 """
 function chifi end
 
@@ -53,16 +59,16 @@ module Tumble end
 
 components = Vector{AbstractComponent}()
 
-gat_scat = Gattino.scatter(randn(50), randn(50), xlabel = "randn()", ylabel = "randn()", title = "random numbers").window
-
 mutable struct ChifiLinkData
    img::String
    name::String
    href::String
 end
+
 lds = Vector{ChifiLinkData}()
+
 push!(lds, ChifiLinkData("https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png", "chifi on github", 
-"https://github.com/ChifiSource"), ChifiLinkData("/ecosystems/chifi.png", "chifi.dev", "https://chifi.dev"))
+"https://github.com/ChifiSource"), ChifiLinkData("/ecosystems/chifi.png", "blog", "https://medium.com/chifi-media"))
 
 links = div("chifi-links", children = [begin
    mainbox = a(href = linkdata.href)
@@ -74,8 +80,6 @@ links = div("chifi-links", children = [begin
    push!(mainbox, image, maintag)
    mainbox
 end for linkdata in lds])
-
-
 
 function build_collaborators(ecotags::Vector)
     srcdir = @__DIR__
@@ -163,6 +167,17 @@ end
 
 DIREC = @__DIR__
 eula_raw = read(DIREC * "/eula.txt", String)
+gat_scat = begin
+    gattino_img = img(src = "https://github.com/ChifiSource/image_dump/blob/main/gattino/gattino.png?raw=true", 
+        height = 100)
+    gattino_img_container = div("gattinoc", align = "center", children = [gattino_img])
+    style!(gattino_img_container, "width" => 100px, "height" => 300px, "padding" => 50px, 
+        "display" => "inline-block")
+    scatplot = Gattino.scatter(randn(50), randn(50), width = 400, height = 350, 
+    xlabel = "randn()", ylabel = "randn()", title = "random numbers").window
+    div("gattino-scatter", children = [gattino_img_container, scatplot])
+end
+
 gat_scat.name = "gattino-scatter"
 EULA_comp = tmd("chifi-EULA", String(eula_raw))
 
@@ -182,6 +197,24 @@ container = begin
     section("containersamp", children = [txt, confirm_button])
 end
 
-push!(components, EULA_comp, gat_scat, links, container)
+svg_header = begin
+    svg_img = img(src = "https://github.com/ChifiSource/image_dump/blob/main/toolips/toolipsSVG.png?raw=true", 
+        height = 150)
+    choices = [:circle, :star, :rect]
+    colors = [:blue, :orange, :pink, :purple]
+    circles = [begin
+        comp = circle("svg-$x")
+        set_size!(comp, 5, 5)
+        set_position!(comp, x, rand(20:130))
+        comp = set_shape(comp, choices[rand(1:3)])
+        style!(comp, "fill" => colors[rand(1:4)])
+        comp::Component{<:Any}
+    end for x in range(25, 275, step = 10)]
+    svg_preview = svg(height = 150, width = 300, children = circles)
+    header = section("svgheader", children = [svg_img, svg_preview])
+end
+
+
+push!(components, EULA_comp, gat_scat, links, container, svg_header)
 export ChifiDocs, this, Toolips, chifi, EULA, components, reload!
 end
