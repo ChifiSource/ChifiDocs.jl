@@ -3,6 +3,7 @@ home = "chifi/ChifiDocs"
 color = "white"
 txtcolor = "#333333"
 icon = "/ecosystems/chifi.png"
+description = ""
 
 [chifi.ChifiDocs]
 path = "chifi/ChifiDocs"
@@ -31,13 +32,14 @@ txtcolor = "white"
 
 [parametric.IPyCells]
 path = "parametric/IPyCells"
-color = "#001400"
+color = "#c91a43"
 txtcolor = "white"
 
 [toolips]
 color = "#75B2C8"
 txtcolor = "white"
 icon = "/ecosystems/toolips.png"
+description = "The `Toolips` ecosystem provides an inclusive and modular web-development suite for the Julia language."
 
 [toolips.ToolipsServables]
 path = "toolips/ToolipsServables"
@@ -45,7 +47,7 @@ color = "#5C73D0"
 
 [toolips.Toolips]
 path = "toolips/Toolips"
-color = "#adc2c9"
+color = "#6F7BA8"
 
 [toolips.ToolipsSession]
 path = "toolips/ToolipsSession"
@@ -80,4 +82,29 @@ icon = "/ecosystems/olive.png"
 [olive.Olive]
 path = "olive/Olive"
 color = "#FDB0C0"
-pages = ["welcome", "welcome.md"]
+
+[olive.OliveHighlighters]
+path = "olive/OliveHighlighters"
+color = "#7b32a8"
+
+[olive.OlivePython]
+path = "olive/OlivePython"
+color = "#32a852"
+
+[algebraframes]
+color = "#c93b10"
+txtcolor = "white"
+icon = "/ecosystems/algebraframes.png"
+
+[algebraframes.AlgebraFrames]
+path = "algebraframes/AlgebraFrames"
+color = "#891496"
+
+[tumble]
+color = "#D73636"
+txtcolor = "white"
+icon = "/ecosystems/tumble.png"
+
+[tumble.Tumble]
+path = "tumble/Tumble"
+color = "#9c2525"

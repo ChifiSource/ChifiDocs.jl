@@ -1,6 +1,6 @@
 [emmaccode]
 name = "emmac"
-ecosystems = ["chifi", "parametric", "toolips", "gattino", "olive"]
+ecosystems = ["chifi", "parametric", "toolips", "gattino", "olive", "algebraframes", "tumble"]
 [Keno]
 name = "Keno Fischer"
 ecosystems = ["toolips"]
