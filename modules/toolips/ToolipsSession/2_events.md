@@ -1,5 +1,5 @@
 ## ComponentModifier callbacks
-The main feature that `ToolipsSession` provides to `Toolips` is full-stack '`ComponentModifier`' callbacks. These are callbacks which call the server, as opposed to operating exclusively on a client. For example, the popup documentation you are reading like this `sample` are added to the page using a `ComponentModifier` callback, the callback calls the server and generates a documentation popup for the name associated with that popup, in this case "sample".
+The main feature that `ToolipsSession` provides to `Toolips` is full-stack '`ComponentModifier`' callbacks. These are callbacks which call the server, as opposed to operating exclusively on a client. For example, the popup documentation you are reading like `this` are added to the page using a `ComponentModifier` callback, the callback calls the server and generates a documentation popup for the name associated with that popup, in this case "sample".
 
 Callbacks are registered `Events`, which we create by calling `on` or `bind` on a `Component` or a `Connection`.
 ```docstrings
@@ -361,3 +361,5 @@ This is in addition to the bindings provided by `Toolips.Components`.
 `ToolipsSession` (as of right now,) also provides a random `Component`, the `button_select`. This `Component` allows us to make an option selection menu very easily.
 
 This will be moved to [toolips servables](/toolips/ToolipsServables) with the release of `ToolipsSession` `0.5`.
+
+

@@ -156,3 +156,5 @@ export TRACKER, home, client_count
 end
 ```
 and we finish by exporting it in our server `Module`. Note that these bindings are **not necessary** but optional dependent on the desired functionality of the `ServerExtension`.
+
+
