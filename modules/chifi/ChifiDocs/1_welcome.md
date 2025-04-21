@@ -1,6 +1,4 @@
-```img
-100|center|/ecosystems/images/olivesquare.png
-```
+`chiheader`
 ```html
 <div align="center">
     <h3>chifi docs</h3>
