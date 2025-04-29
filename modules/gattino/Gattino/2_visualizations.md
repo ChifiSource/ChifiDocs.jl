@@ -34,6 +34,7 @@ Here is a comprehensive list of every **context plotting function** base `Gattin
 ```julia
 
 ```
+- Note that if continuous numerical data has already been scaled to our `Context`, we provide a maximum and minimum value as arguments to each of these functions to keep it scaled properly with that data. Ideally, you would plot the data with the largest continuous range *first* to account for this.
 ## layers
 Another important thing to consider in `Gattino` is *layering*. Layers in `Gattino` are individual *children* of the `Context.window` `Component{:svg}`. We can access new layers with `layers`, and create new layers by using `group!`. For mutating layers, we also have some additional functions:
 - `layers`
@@ -82,7 +83,7 @@ Finally, there is open mode, which will loop through each `Component` and also g
 ```julia
 open_layer!(f::Function, con::AbstractContext, layer::String)
 ```
-We pass a `Function` into `open_layer`, which takes a `Pair{Int64, Component}` -- the enumeration and the `Component`. This `ecomp` combination has several functions binded to it. These numerous options allow us to create variations using data. For setting component properties (such as the radius of a circle with `r`,) we use `set!`:
+We pass a `Function` into `open_layer`, which takes a `Pair{Int64, Component}` -- the enumeration and the `Component`. This `ecomp` combination has several functions binded to it. These numerous options allow us to create variations using data (or across the entire layer). For setting component properties (such as the radius of a circle with `r`,) we use `set!`:
 ```julia
 # sets every component's property statically:
 set!(ecomp::Pair{Int64, <:ToolipsSVG.ToolipsServables.Servable}, prop::Symbol, value::Any)
@@ -100,6 +101,32 @@ style!(ecomp::Pair{Int64, <:ToolipsSVG.ToolipsServables.AbstractComponent}, key:
 # regular styling:
 style!(ecomp::Pair{Int64, <:ToolipsSVG.ToolipsServables.AbstractComponent}, p::Pair{String, String} ...)
 ```
-There is also `set_gradient!`, which can be used to make a gradient across multiple components in a visualization. Useful for this is a gradient creation function, `make_gradient`.
+There is also `set_gradient!`, which can be used to make a gradient across multiple components in a visualization. Useful for this is a gradient creation function, `make_gradient`. Make sure to check out all of the dispatches here, as these functions can be used in a lot of different ways.
+```julia
+using Gattino
+firstfeature = randn(500)
+secondfeature = randn(500)
+
+mycon = context(500, 500) do con::Context
+    Gattino.scatter_plot!(con, firstfeature, secondfeature)
+end
+
+thirdfeature = randn(500)
+fourthfeature = randn(500)
+
+Gattino.open_layer!(mycon, "points") do ec
+    Gattino.set!(ec, :r, thirdfeature, max = 60)
+    style!(ec, "stroke" => "#1e1e1e")
+    style!(ec, fourthfeature, "stroke-width" => 10)
+end
+
+mycon
+```
+
+`openlayersample`
+
+- By using `open_layer!`, we can represent multiple features more easily in the same visualization, especially related features.
+
+
 
 
