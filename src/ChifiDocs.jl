@@ -181,6 +181,37 @@ end
 gat_scat.name = "gattino-scatter"
 EULA_comp = tmd("chifi-EULA", String(eula_raw))
 
+
+local_euro_resource = GattinoPleths.ChoroplethResource("europe.svg", 680 => 520, GattinoPleths.def_names)
+
+x = ["it", "uk", "fr", "de"]
+y = [50, 22, 33, 95]
+result = choropleth(x, y, local_euro_resource)
+GattinoPleths.choropleth_legend!(result, "dry" => "wet")
+result
+
+pleth = result.window
+pleth.name = "plethsample"
+
+con_manual = context() do con::Context
+    w, h = Int64(round(con.dim[1] * .75)), Int64(round(con.dim[2] * .75))
+    ml, mt = Int64(round(con.dim[1] * .12)) + con.margin[1], Int64(round(con.dim[2] * .12) + con.margin[2])
+    group!(con, "title") do titlegroup::Group
+        posx = Int64(round(con.dim[1] * .35) + con.margin[1])
+        posy = Int64(round(con.dim[2] * .08) + con.margin[2])
+        Gattino.text!(con, posx, posy, "sample plot", "fill" => "black", "font-size" => 15pt)
+    end
+   group(con, w, h, ml => mt) do plotgroup::Group
+        group!(plotgroup, "axes") do g::Group
+            Gattino.axes!(g)
+        end
+        group!(plotgroup, "grid") do g::Group
+            Gattino.grid!(g, 4)
+        end
+    end
+end.window
+
+con_manual.name = "conmanual"
 container = begin
     confirm_button = div("confbutt", text = "confirm")
 
@@ -197,6 +228,15 @@ container = begin
     section("containersamp", children = [txt, confirm_button])
 end
 
+chifidocs_header = begin
+    right_in = keyframes("rightin")
+    keyframes!(right_in, 0percent, "opacity" => 0percent, "transform" => translateX(-5percent))
+    keyframes!(right_in, 100percent, "opacity" => 100percent, "transform" => translateX(0percent))
+    chisvg = svg(text = read(DIREC * "/chifi.svg", String), width = 125, height = 125)
+    style!(chisvg, "animation-name" => "rightin", "animation-duration" => 650ms)
+    div("chiheader", children = [right_in, chisvg], align = "center")
+end
+
 svg_header = begin
     svg_img = img(src = "https://github.com/ChifiSource/image_dump/blob/main/toolips/toolipsSVG.png?raw=true", 
         height = 150)
@@ -211,10 +251,41 @@ svg_header = begin
         comp::Component{<:Any}
     end for x in range(25, 275, step = 10)]
     svg_preview = svg(height = 150, width = 300, children = circles)
-    header = section("svgheader", children = [svg_img, svg_preview])
+    section("svgheader", children = [svg_img, svg_preview])
+end
+
+openlay_sample = begin
+    firstfeature = randn(500)
+    secondfeature = randn(500)
+    thirdfeature = randn(500)
+    fourthfeature = randn(500)
+    mycon = context(500, 500) do con::Context
+        Gattino.scatter_plot!(con, firstfeature, secondfeature)
+    end
+    Gattino.open_layer!(mycon, "points") do ec
+         Gattino.set!(ec, :r, thirdfeature, max = 60)
+         style!(ec, "stroke" => "#1e1e1e")
+         style!(ec, fourthfeature, "stroke-width" => 10)
+    end
+    mycon.window.name = "openlayersample"    
+    mycon.window
+end
+
+groupgat_sample = begin
+    myframe = context(500, 250) do con::Context
+        group(con, 250, 250) do g::Group
+            Gattino.scatter_plot!(g, [1, 2, 3, 4], [1, 2, 3, 4])
+        end
+    end
+    group(myframe, 250, 250, 250 => 0) do g::Group
+        Gattino.grid!(g, 4, "stroke" => "pink")
+    end
+    myframe.window.name = "groupgatsample"
+    myframe.window
 end
 
 
-push!(components, EULA_comp, gat_scat, links, container, svg_header)
+push!(components, EULA_comp, gat_scat, links, container, svg_header, con_manual, 
+chifidocs_header, pleth, openlay_sample, groupgat_sample)
 export ChifiDocs, this, Toolips, chifi, EULA, components, reload!
 end
