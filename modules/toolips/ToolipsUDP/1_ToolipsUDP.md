@@ -44,7 +44,12 @@ end
 
 # this server will continuously switch between response 1 and response 2.
 ```
-
+As with normal `Toolips`, we use `start!` -- the dispatch is only slightly different:
+```julia
+start!(st::Type{ServerTemplate{:UDP}}, mod::Module; ip::IP4 = "127.0.0.1":2000, threads::UnitRange{Int64} = 1:1, 
+    async::Bool = true)
+```
+- Note that an asynchronous server will not have error reporting (it just will not respond,) so running the server synchronously on the main thread is likely a better workflow for development servers.
 ## responses
 Our handler functions will be passed a `UDPConnection`, the `Connection` type for a `ToolipsUDP` server. This is a sub-type of `AbstractUDPConnection`, and behaves the same way as most other `AbstractConnection` sub-types other than not having an HTTP header.
 - There is also the additional dispatch of `get_ip4` -- allowing us to get the port a user is connecting from.
@@ -76,6 +81,41 @@ This makes things relatively straightforward. `ToolipsUDP` also includes a `UDPI
 ## toolips
 An important thing to remember when using `ToolipsUDP` is that it is designed to mirror the `Toolips` experience as closely as possible. We have access to the regular `Toolips` functions on our `Connection`, such as `get_ip`. The only thing that changes is that we are no longer using HTTP.
 ## extensions
-Like `Toolips`, `ToolipsUDP` has support for extensions. These extensions cover the same bases as the `Toolips` equivalents they are based on.
+Like `Toolips`, `ToolipsUDP` has support for extensions. These extensions cover the same bases as the `Toolips` equivalents they are based on; an extension does something each time the server responds with a `route!` dispatch and the server does something on start by adding an `on_start` dispatch. In order to create an extension, we simply create a new sub-type of `AbstractUDPExtension` and then add new dispatches for these functions. `ToolipsUDP` also includes the `UDPExtension`, a parametric type that takes the place of the `QuickExtension` from `Toolips` and allows us to quickly make an extension.
+```julia
+module NewServer
+using ToolipsUDP
+import ToolipsUDP: on_start, route!, UDPExtension
+
+# called on each response
+function route!(c::UDPConnection, ext::UDPExtension{:cr})
+    c[:count] += 1
+end
+
+# called when the server starts
+function on_start(data:::Dict{Symbol, Any}, ext::UDPExtension{:cr})
+    push!(data, :count => 0)
+end
+
+mainhandler = handler("counter") do c::UDPConnection
+    println("registered a new client!")
+    clientn = c[:count]
+    respond!(c, "you have been registered as client $clientn")
+end
+
+data_ext = UDPExtension{:cr}()
+export mainhandler, data_ext
+end
+```
 ## multi-threading
+Like with `Toolips`, there are a few important things to take note of before multi-threading a project;
+- first, the project must have its own environment and source -- the server should be a Julia project. We can make single-threaded servers in the REPL, but if we want them to be multi-threaded they need to be saved as a file.
+- second, we will need to annotate any `UDPConnection` as an `AbstractUDPConnection`, as on the other threads this function will be passed an `IOConnection`. 
+
+Other than this, we mostly use threads in the same way we would with regular `Toolips`, and start a server with multiple threads by providing the appropriate arguments to `start!`.
+```julia
+start!(st::Type{ServerTemplate{:UDP}}, mod::Module; ip::IP4 = "127.0.0.1":2000, threads::UnitRange{Int64} = 1:1, 
+    async::Bool = true)
+```
+
 
