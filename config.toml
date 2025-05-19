@@ -92,7 +92,7 @@ path = "olive/OlivePython"
 color = "#32a852"
 
 [algebraframes]
-color = "#c93b10"
+color = "#F9C800"
 txtcolor = "white"
 icon = "/ecosystems/algebraframes.png"
 

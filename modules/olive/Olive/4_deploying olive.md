@@ -4,6 +4,6 @@
 
 ## make session
 
-## deployment modding
+## deployment modifications
 
 

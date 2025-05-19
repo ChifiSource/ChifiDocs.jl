@@ -59,4 +59,8 @@ We can also *save* a directory, and this will save the directory for our current
 
 As for the `:home` directory, it works quite differently. Like other saved directories, there is a `cdto` button on the home directory. There is also a `run` button and another `add` button. This `add` button doesn't add files, it adds **extensions**. This button lets us quickly install extensions by simply typing their name. This will completely load the extension into our project current `Olive` for us automatically, performing the steps of [installing extensions](#installing-extensions) automatically for us. Extensions can be added here by name *or* by URL. Once the extension is added, we can use the `run` button. The `run` button is used to reload the current `olive` module, which is a containerized environment the `Olive` notebook runs inside of that is created from `src/olive.jl` in your `Olive` home.
 ## installing extensions
-To add extensions to your `Olive`, 
+There are multiple ways to add a new extension to an `olive` project:
+- 1. Inside of the project explorer, if we click the `+` icon in our `:home` dir, we can type a packages name or URL to add the package by URL.
+- 2. Alternatively, we can manually `Pkg.activate` our `olive` project and then add the package to that environment. After adding the package, we will need to add `using PackageName` to our `src/olive.jl` file also contained within the `olive` home. This can all be done through `Olive`, or through the Julia REPL. This is a good alternative, especially if we are wanting to use a package locally. For example, we could `Pkg.dev` our project `olive/OliveExtension.jl` and then use `OliveExtension` in our `olive.jl`.
+
+
