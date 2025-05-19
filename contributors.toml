@@ -15,3 +15,7 @@ ecosystems = ["toolips", "olive"]
 [braamvandyk]
 name = "Braam van Dyk"
 ecosystems = []
+
+[VarLad]
+name = "VarLad"
+ecosystems = ["parametric"]

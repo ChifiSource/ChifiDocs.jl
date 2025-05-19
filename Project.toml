@@ -20,6 +20,7 @@ ToolipsSession = "2fe55384-55bc-4df3-9d59-c817d405cd05"
 ToolipsUDP = "c24f5779-9d3b-4059-90d7-a34104ea6889"
 
 [compat]
+Documator = "0.1.0"
 Gattino = "0.1.1"
 GattinoPleths = "0.0.9"
 Olive = "0.1.1"
