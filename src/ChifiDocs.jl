@@ -43,9 +43,6 @@ while also creating some pretty awesome tools for our favorite programming langu
 """
 function chifi end
 
-
-function EULA end
-
 """
 ### this sample was retrieved!
 This sample was grabbed through documentation (`this` is a function) interpolation built into `Documator`!
@@ -68,7 +65,8 @@ end
 lds = Vector{ChifiLinkData}()
 
 push!(lds, ChifiLinkData("https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png", "chifi on github", 
-"https://github.com/ChifiSource"), ChifiLinkData("/ecosystems/chifi.png", "blog", "https://medium.com/chifi-media"))
+"https://github.com/ChifiSource"), ChifiLinkData("/ecosystems/chifi.png", "blog", "https://medium.com/chifi-media"), 
+ChifiLinkData("/images/contact.png", "contact", "/contact"), ChifiLinkData("/images/creative-commons.png", "licenses", "/licensing"))
 
 links = div("chifi-links", children = [begin
    mainbox = a(href = linkdata.href)
@@ -148,9 +146,17 @@ function build_ecotags(docsystems::Vector{Documator.DocSystem})
     end for system in docsystems])
 end
 
+licenses = route("/licensing") do c::AbstractConnection
+    write!(c, "hello licenses!")
+end
+
 function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
     docloader = Documator.docloader
     docloader.dir = path
+    if ~(licenses.path in docloader.routes)
+        # add new routes here!
+        push!(docloader.routes, licenses)
+    end
     docloader.docsystems, docloader.homename = Documator.read_doc_config(path, ChifiDocs)
     ecotags = build_ecotags(docloader.docsystems)
     push!(components,  build_collaborators(ecotags), ecotags ...)
@@ -237,6 +243,23 @@ chifidocs_header = begin
     div("chiheader", children = [right_in, chisvg], align = "center")
 end
 
+chifidocs_footer = begin
+    cc_by = img("ccby", src = "/images/creative-commons.png", width = 35)
+    on(cc_by, "click") do cl::ClientModifier
+
+    end
+    license_link = a(href = "/licensing", text = "licensing")
+    style!(license_link, "color" => "white", "background-color" => "#1e1e1e", "padding" => 7px, 
+    "margin-left" => 3px)
+    style!(cc_by, "display" => "inline-block")
+    chi_label = a(text = "chifi software")
+    style!(chi_label, "color" => "white", "font-size" => 15pt, "font-weight" => "bold", 
+    "margin-left" => 3px)
+    foot = div("chifoot", children = [cc_by, chi_label, license_link])
+    style!(foot, "background-color" => "#1e1e1e", "padding" => 2percent, "border-radius" => 4px)
+    foot
+end
+
 svg_header = begin
     svg_img = img(src = "https://github.com/ChifiSource/image_dump/blob/main/toolips/toolipsSVG.png?raw=true", 
         height = 150)
@@ -286,6 +309,6 @@ end
 
 
 push!(components, EULA_comp, gat_scat, links, container, svg_header, con_manual, 
-chifidocs_header, pleth, openlay_sample, groupgat_sample)
+chifidocs_header, pleth, openlay_sample, groupgat_sample, foot)
 export ChifiDocs, this, Toolips, chifi, EULA, components, reload!
 end
