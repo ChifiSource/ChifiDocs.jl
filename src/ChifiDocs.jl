@@ -146,7 +146,7 @@ function build_ecotags(docsystems::Vector{Documator.DocSystem})
     end for system in docsystems])
 end
 
-licenses = route("/licensing") do c::AbstractConnection
+licenses = route("/licensing") do c::Connection
     write!(c, "hello licenses!")
 end
 
