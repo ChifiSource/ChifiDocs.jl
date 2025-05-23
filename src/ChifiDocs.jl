@@ -167,6 +167,13 @@ function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
         push!(docloader.routes, licenses, contact)
     end
     docloader.docsystems, docloader.homename = Documator.read_doc_config(path, ChifiDocs)
+    push!(docloader.meta, "title" => "chifi docs", 
+    "desc" => """chifi is an open-source software organization focused on making web-development 
+    and data-science software for the Julia programming language. 'ChifiDocs' is an effort to centralize 
+    `chifi` services and documentation, as well as provide a basic home for `chifi` on the internet. This 
+    website includes interactive documentation, information on chifi, information on programming, as well as links 
+    to the rest of the `chifi` web.""", 
+    "tags" => "Programming, Software, WebDevelopment, Internet, Julia, Julialang", "icon" => "/favicon.ico")
     ecotags = build_ecotags(docloader.docsystems)
     push!(components,  build_collaborators(ecotags), ecotags ...)
     Documator.load_docs!(ChifiDocs, docloader)
