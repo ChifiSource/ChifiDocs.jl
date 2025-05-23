@@ -1,7 +1,7 @@
 name = "ChifiDocs"
 uuid = "2902d582-2320-11ef-162d-5129ef18b83b"
 authors = ["emmac "]
-version = "0.1.0"
+version = "0.0.1"
 
 [deps]
 CarouselArrays = "728b0f75-d1ac-44d2-96e7-73f1be4eca2f"
