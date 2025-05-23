@@ -11,7 +11,7 @@ using OliveHighlighters
 
 my_hl = Highlighter("s a m p l e s")
 
-style!(my_hl, :s, "color" => "red")
+style!(my_hl, :s, "color" => "red", :s)
 
 OliveHighlighters.mark_all!(my_hl, "s")
 ```

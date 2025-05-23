@@ -11,6 +11,7 @@ chifi docs is a documentation site for `chifi` software created using `Documator
 
 """
 module ChifiDocs
+DIREC = @__DIR__
 # chifi :)
 using ChifiDocs
 using CarouselArrays
@@ -147,7 +148,15 @@ function build_ecotags(docsystems::Vector{Documator.DocSystem})
 end
 
 licenses = route("/licensing") do c::Connection
-    write!(c, "hello licenses!")
+    write!(c, c[:doc].pages["styles"])
+    DIREC = @__DIR__
+    write!(c, tmd("chifi-EULA", read(DIREC * "/eula.txt", String)))
+end
+
+contact = route("/contact") do c::Connection
+    write!(c, c[:doc].pages["styles"])
+    write!(c, h2(text = "hello!"), 
+    h4(text = "this contact page has yet to be fully implemented. please bear with us as we develop our web!"))
 end
 
 function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
@@ -155,7 +164,7 @@ function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
     docloader.dir = path
     if ~(licenses.path in docloader.routes)
         # add new routes here!
-        push!(docloader.routes, licenses)
+        push!(docloader.routes, licenses, contact)
     end
     docloader.docsystems, docloader.homename = Documator.read_doc_config(path, ChifiDocs)
     ecotags = build_ecotags(docloader.docsystems)
@@ -171,8 +180,6 @@ function reload!()
     Documator.load_docs!(ChifiDocs, docloader)
 end
 
-DIREC = @__DIR__
-eula_raw = read(DIREC * "/eula.txt", String)
 gat_scat = begin
     gattino_img = img(src = "https://github.com/ChifiSource/image_dump/blob/main/gattino/gattino.png?raw=true", 
         height = 100)
@@ -185,8 +192,6 @@ gat_scat = begin
 end
 
 gat_scat.name = "gattino-scatter"
-EULA_comp = tmd("chifi-EULA", String(eula_raw))
-
 
 local_euro_resource = GattinoPleths.ChoroplethResource("europe.svg", 680 => 520, GattinoPleths.def_names)
 
@@ -243,19 +248,32 @@ chifidocs_header = begin
     div("chiheader", children = [right_in, chisvg], align = "center")
 end
 
+
 chifidocs_footer = begin
-    cc_by = img("ccby", src = "/images/creative-commons.png", width = 35)
+    cc_by = img("ccby", src = "/images/creative-commons.png", width = 17)
     on(cc_by, "click") do cl::ClientModifier
 
     end
     license_link = a(href = "/licensing", text = "licensing")
-    style!(license_link, "color" => "white", "background-color" => "#1e1e1e", "padding" => 7px, 
-    "margin-left" => 3px)
+    link_common = ("color" => "white", "background-color" => "#1e1e1e", "padding" => 7px, 
+    "margin-left" => 5px)
+    style!(license_link, link_common ...)
+    contact_link = a(href = "/contact", text = "contact")
+    style!(contact_link, link_common ...)
+    locate_label = a("locate", text = "Albuquerque, New Mexico")
+    style!(locate_label, "color" => "white", "margin-left" => 8px, "font-size" => 11pt, 
+    "opacity" => 60percent)
     style!(cc_by, "display" => "inline-block")
     chi_label = a(text = "chifi software")
     style!(chi_label, "color" => "white", "font-size" => 15pt, "font-weight" => "bold", 
-    "margin-left" => 3px)
-    foot = div("chifoot", children = [cc_by, chi_label, license_link])
+    "margin-left" => .5percent)
+    docs_label = a(text = "chifidocs (" * string(pkgversion(ChifiDocs)) * ")")
+    style!(docs_label, "opacity" => 60percent, "color" => "#f178a1", "font-size" => 13pt, 
+    "margin-left" => 7percent)
+    chisvg = svg(text = read(DIREC * "/chifi.svg", String), width = 17, height = 17)
+    style!(chisvg, "animation-name" => "rightin", "animation-duration" => 650ms, 
+    "margin-left" => 3percent)
+    foot = div("chifoot", children = [cc_by, chi_label, locate_label, contact_link, license_link, docs_label])
     style!(foot, "background-color" => "#1e1e1e", "padding" => 2percent, "border-radius" => 4px)
     foot
 end
@@ -308,7 +326,7 @@ groupgat_sample = begin
 end
 
 
-push!(components, EULA_comp, gat_scat, links, container, svg_header, con_manual, 
+push!(components, gat_scat, links, container, svg_header, con_manual, 
 chifidocs_header, pleth, openlay_sample, groupgat_sample, foot)
 export ChifiDocs, this, Toolips, chifi, EULA, components, reload!
 end
