@@ -1,0 +1,2 @@
+# hello algebraframes!
+The first initial release of `AlgebraFrames` has yet to be completed, but the version we currently have is rapidly approaching its alpha release. Very soon, a lot more documentation will be available here.
