@@ -19,6 +19,7 @@ using Documator
 # parametric :)
 using Toolips.ParametricProcesses
 using IPyCells
+using ParametricScheduler
 # toolips <3
 using Toolips
 using Toolips.ToolipsServables
@@ -32,6 +33,7 @@ using GattinoPleths
 using Olive
 using Olive.OliveHighlighters
 using OlivePython
+using OliveDocBrowser
 """
 #### chifi !
 - What on Earth is a 'chifi'?
@@ -67,7 +69,8 @@ lds = Vector{ChifiLinkData}()
 
 push!(lds, ChifiLinkData("https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png", "chifi on github", 
 "https://github.com/ChifiSource"), ChifiLinkData("/ecosystems/chifi.png", "blog", "https://medium.com/chifi-media"), 
-ChifiLinkData("/images/contact.png", "contact", "/contact"), ChifiLinkData("/images/creative-commons.png", "licenses", "/licensing"))
+ChifiLinkData("/images/contact.png", "contact", "/contact"), ChifiLinkData("/images/creative-commons.png", "licenses", "/licensing"), 
+ChifiLinkData("", "write ups", "/writeups"), ChifiLinkData("", "toolips app", "/toolips/app"))
 
 links = div("chifi-links", children = [begin
    mainbox = a(href = linkdata.href)
@@ -136,7 +139,7 @@ function build_ecotags(docsystems::Vector{Documator.DocSystem})
             cl.name = system.name
             redirect!(cl, "/$(system.name)")
         end
-        style!(maintag, "color" => system.ecodata["txtcolor"], "font-size" => 12pt)
+        style!(maintag, "color" => system.ecodata["txtcolor"], "font-size" => 12pt, "margin-left" => 4px)
         pkg_cont = length(system.modules)
         count_tag = span(text = "$pkg_cont packages")
         style!(count_tag, "color" => system.ecodata["txtcolor"], "font-size" => 10pt, "float" => "right", "font-weight" => "bold", "margin-right" => 8px, "margin-top" => 8px, 
@@ -150,13 +153,40 @@ end
 licenses = route("/licensing") do c::Connection
     write!(c, c[:doc].pages["styles"])
     DIREC = @__DIR__
+    license_container = div("licenseco", children = [EULA_b, MIT_b, CCBY_B])
+
     write!(c, tmd("chifi-EULA", read(DIREC * "/eula.txt", String)))
 end
 
 contact = route("/contact") do c::Connection
     write!(c, c[:doc].pages["styles"])
-    write!(c, h2(text = "hello!"), 
-    h4(text = "this contact page has yet to be fully implemented. please bear with us as we develop our web!"))
+    contact_dialog = div("contactchi")
+    style!(contact_dialog, "background-color" => "#ef6292", "border-radius" => 5px, 
+    "border" => "1px solid #522966", "padding" => 2percent, "position" => "absolute", 
+    "width" => 40percent, "left" => 30percent, "top" => 20percent, "height" => 30percent)
+    contact_dialog[:children] = [begin 
+        lbl = a(text = infoname)
+        style!(lbl, "color" => "#333333", "font-weight" => "bold", "margin-right" => 10px)
+        fillbox = Components.textdiv(infoname, text = "")
+        style!(fillbox, "padding" => 2percent, "background-color" => "white", "border" => "1px solid #333333")
+        div("$infoname-cont", children = [lbl, fillbox])
+    end for infoname in ("name", "email", "organization", "subject", "message")]
+    mainbod = body("main", children = contact_dialog)
+    style!(mainbod, "background-color" => "#333333", "transition" => 1000ms)
+    on(c, 100) do cm::ComponentModifier
+        style!(cm, "main", "background-color" => "#191921")
+    end
+    write!(c, mainbod)
+end
+
+writeups = route("/writeups") do c::Connection
+    write!(c, "have yet to fully implement this page :(")
+end
+
+toolips_app = route("/toolips/app") do c::Connection
+    gallery = div("gallery")
+    main_body = body("tlapp", children = [gallery])
+    write!(c, main_body)
 end
 
 function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
@@ -164,7 +194,7 @@ function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
     docloader.dir = path
     if ~(licenses.path in docloader.routes)
         # add new routes here!
-        push!(docloader.routes, licenses, contact)
+        push!(docloader.routes, licenses, contact, writeups, toolips_app)
     end
     docloader.docsystems, docloader.homename = Documator.read_doc_config(path, ChifiDocs)
     push!(docloader.meta, "title" => "chifi docs", 
@@ -255,7 +285,6 @@ chifidocs_header = begin
     div("chiheader", children = [right_in, chisvg], align = "center")
 end
 
-
 chifidocs_footer = begin
     cc_by = img("ccby", src = "/images/creative-commons.png", width = 17)
     on(cc_by, "click") do cl::ClientModifier
@@ -331,7 +360,6 @@ groupgat_sample = begin
     myframe.window.name = "groupgatsample"
     myframe.window
 end
-
 
 push!(components, gat_scat, links, container, svg_header, con_manual, 
 chifidocs_header, pleth, openlay_sample, groupgat_sample, foot)
