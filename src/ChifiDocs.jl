@@ -34,6 +34,8 @@ using Olive
 using Olive.OliveHighlighters
 using OlivePython
 using OliveDocBrowser
+using SMTPClient
+
 """
 #### chifi !
 - What on Earth is a 'chifi'?
@@ -57,6 +59,9 @@ end
 
 module Tumble end
 
+
+include("toolipsapp.jl")
+
 components = Vector{AbstractComponent}()
 
 mutable struct ChifiLinkData
@@ -70,7 +75,7 @@ lds = Vector{ChifiLinkData}()
 push!(lds, ChifiLinkData("https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png", "chifi on github", 
 "https://github.com/ChifiSource"), ChifiLinkData("/ecosystems/chifi.png", "blog", "https://medium.com/chifi-media"), 
 ChifiLinkData("/images/contact.png", "contact", "/contact"), ChifiLinkData("/images/creative-commons.png", "licenses", "/licensing"), 
-ChifiLinkData("", "write ups", "/writeups"), ChifiLinkData("", "toolips app", "/toolips/app"))
+ChifiLinkData("/images/pencil.png", "write ups", "/writeups"), ChifiLinkData("/images/toolipsapp_icon.png", "toolips app", "/toolips/app"))
 
 links = div("chifi-links", children = [begin
    mainbox = a(href = linkdata.href)
@@ -153,40 +158,96 @@ end
 licenses = route("/licensing") do c::Connection
     write!(c, c[:doc].pages["styles"])
     DIREC = @__DIR__
-    license_container = div("licenseco", children = [EULA_b, MIT_b, CCBY_B])
-
+   # EULA_B
+   # license_container = div("licenseco", children = [EULA_b, MIT_b, CCBY_B])
     write!(c, tmd("chifi-EULA", read(DIREC * "/eula.txt", String)))
 end
 
 contact = route("/contact") do c::Connection
     write!(c, c[:doc].pages["styles"])
-    contact_dialog = div("contactchi")
-    style!(contact_dialog, "background-color" => "#ef6292", "border-radius" => 5px, 
-    "border" => "1px solid #522966", "padding" => 2percent, "position" => "absolute", 
-    "width" => 40percent, "left" => 30percent, "top" => 20percent, "height" => 30percent)
-    contact_dialog[:children] = [begin 
+    goback = div("goback", onclick = "location.href='/'", text = "< back to chifi docs", align = "center")
+    style!(goback, "background-color" => "#333333", "color" => "white", "padding" => 1percent, "cursor" => "pointer")
+    contact_dialog = div("contactchi", children = [goback])
+    style!(contact_dialog, "background-color" => "#f178a1", "border-radius" => 5px, 
+    "border" => "1px solid #522966", "position" => "absolute", "opacity" => 0percent, 
+    "width" => 0percent, "left" => 30percent, "top" => 12percent, "transition" => 1.5seconds)
+    dialog_inner = div("contactinner", style = "padding:2%;")
+    chi_img = img(src = "/images/chifi-white.png", width = 125)
+    img_wrap = div("cw", align = "center", children = [chi_img])
+    dialog_inner[:children] = [img_wrap, [begin 
         lbl = a(text = infoname)
-        style!(lbl, "color" => "#333333", "font-weight" => "bold", "margin-right" => 10px)
+        style!(lbl, "color" => "333333", "font-weight" => "bold", "margin-right" => 10px, 
+        "margin-top" => 7px, "font-size" => 13pt)
         fillbox = Components.textdiv(infoname, text = "")
-        style!(fillbox, "padding" => 2percent, "background-color" => "white", "border" => "1px solid #333333")
+        style!(fillbox, "padding" => 2percent, "background-color" => "#f6a5c1", "border" => "1px solid #333333", 
+        "color" => "#333333")
         div("$infoname-cont", children = [lbl, fillbox])
-    end for infoname in ("name", "email", "organization", "subject", "message")]
+    end for infoname in ("name", "email", "organization", "subject", "message")] ...]
+    style!(dialog_inner[:children][end][:children][2], "height" => 200px)
+    confirm_button = div("conf", text = "confirm", align = "center")
+    style!(confirm_button, "padding" => 6px, "font-weight" => "bold", "background-color" => "#962a81", 
+    "cursor" => "pointer", "color" => "white", "font-size" => 15pt)
+    on(c, confirm_button, "click") do cm::ComponentModifier
+        email = cm["email"]["text"]
+        org = cm["organization"]["text"]
+        name = cm["name"]["text"]
+        subject = cm["subject"]["text"]
+        message = cm["message"]["text"]
+        if "" in (name, subject, message)
+            alert!(cm, "sending a message requires the name, subject, and message fields.")
+            return
+        end
+        bod = "Message from $name ($(email)) (Organization: $org)\n$message"
+        opt = SendOptions(
+        isSSL = true,
+        username = Main.CHIFICONTACT,
+        passwd = Main.CONTACTPWD)
+        rep2 = ""
+        if email != ""
+            rep2 = "Reply-To: $email\r\n"
+        end
+        body = IOBuffer(
+        "From: chifi <contact@chifidocs.com>\r\n" *
+        "To: contact@chifidocs.com\r\n" *
+        "Subject: $subject\r\n" *
+        rep2 *
+        "\r\n" *
+        "$bod\r\n")
+        url = "smtps://smtp.privateemail.com:465"
+        rcpt = ["<contact@chifidocs.com>"]
+        from = "<contact@chifidocs.com>"
+        resp = send(url, rcpt, from, body, opt)
+        if email != "" && contains(email, "@")
+            body = IOBuffer(
+            "From: chifi <contact@chifidocs.com>\r\n" *
+            "To: $email\r\n" *
+            "Subject: You've mailed us!\r\n" *
+            "\r\n" *
+            "Hello, you've reached chifi! Thanks for reaching out. We will get back to you soon. This is an automated message.\r\n")
+            url = "smtps://smtp.privateemail.com:465"
+            rcpt = [email]
+            try
+                resp = send(url, rcpt, from, body, opt)
+            catch
+                alert!(cm, 
+                "$email is not a valid provided email. your message was sent but no reply will be sent.")
+            end
+        end
+        alert!(cm, "message sent. thanks for connecting with us. We will reply within five business days.")
+        redirect!(cm, "/")
+    end
+    push!(contact_dialog, dialog_inner, confirm_button)
     mainbod = body("main", children = contact_dialog)
     style!(mainbod, "background-color" => "#333333", "transition" => 1000ms)
     on(c, 100) do cm::ComponentModifier
         style!(cm, "main", "background-color" => "#191921")
+        style!(cm, "contactchi", "width" => 40percent, "opacity" => 100percent)
     end
     write!(c, mainbod)
 end
 
 writeups = route("/writeups") do c::Connection
-    write!(c, "have yet to fully implement this page :(")
-end
-
-toolips_app = route("/toolips/app") do c::Connection
-    gallery = div("gallery")
-    main_body = body("tlapp", children = [gallery])
-    write!(c, main_body)
+    write!(c, "`write ups` has yet to be fully implemented into `ChifiDocs`.")
 end
 
 function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
