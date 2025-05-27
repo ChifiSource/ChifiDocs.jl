@@ -224,19 +224,22 @@ contact = route("/contact") do c::Connection
             body = IOBuffer(
             "From: chifi <contact@chifidocs.com>\r\n" *
             "To: $email\r\n" *
-            "Subject: You've mailed us!\r\n" *
+            "Subject: chifi | we've reached you\r\n" *
             "\r\n" *
-            "Hello, you've reached chifi! Thanks for reaching out. We will get back to you soon. This is an automated message.\r\n")
+            "We got your message; thank you for reaching out.\r\n" *
+            """We will get back to you within three business days.\r\n
+            Your query: \r\n'''\r\n$bod\r\n'''\n\r\n""" *
+            "(this is an automated message) \r\n")
             url = "smtps://smtp.privateemail.com:465"
             rcpt = [email]
             try
                 resp = send(url, rcpt, from, body, opt)
             catch
                 alert!(cm, 
-                "$email is not a valid provided email. your message was sent but no reply will be sent.")
+                "$email is not a valid provided email. Your message was sent but no reply can be returned.")
             end
         end
-        alert!(cm, "message sent. thanks for connecting with us. We will reply within five business days.")
+        alert!(cm, "message sent. thanks for connecting with us. You should receive an e-mail shortly.")
         redirect!(cm, "/")
     end
     push!(contact_dialog, dialog_inner, confirm_button)

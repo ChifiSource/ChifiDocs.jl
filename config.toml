@@ -8,17 +8,18 @@ description = ""
 [chifi.ChifiDocs]
 path = "chifi/ChifiDocs"
 color = "#FDB0C0"
-pages = ["welcome", "welcome.md"]
 
 [chifi.Documator]
 path = "chifi/Documator"
 color = "#6682E0"
-pages = []
 
 [chifi.CarouselArrays]
 path = "chifi/CarouselArrays"
 color = "#B3438F"
-pages = []
+
+[chifi.ChiProxy]
+path = "chifi/ChiProxy"
+color = "#40859c"
 
 [parametric]
 color = "#333333"
@@ -33,6 +34,11 @@ txtcolor = "white"
 [parametric.IPyCells]
 path = "parametric/IPyCells"
 color = "#c91a43"
+txtcolor = "white"
+
+[parametric.ParametricScheduler]
+path = "parametric/ParametricScheduler"
+color = "#FF7860"
 txtcolor = "white"
 
 [toolips]
@@ -91,10 +97,15 @@ color = "#7b32a8"
 path = "olive/OlivePython"
 color = "#32a852"
 
+[olive.OliveDocBrowser]
+path = "olive/OliveDocBrowser"
+color = "#AA336A"
+txtcolor = "#1e1e1e"
+
 [algebraframes]
-color = "#F9C800"
-txtcolor = "white"
+color = "#ba9604"
 icon = "/ecosystems/algebraframes.png"
+txtcolor = "white"
 
 [algebraframes.AlgebraFrames]
 path = "algebraframes/AlgebraFrames"
