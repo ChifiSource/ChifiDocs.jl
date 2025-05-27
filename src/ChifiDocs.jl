@@ -53,9 +53,12 @@ function chifi end
 This sample was grabbed through documentation (`this` is a function) interpolation built into `Documator`!
 """
 function this end
+
 module AlgebraFrames
 
 end
+
+module ChiProxy end
 
 module Tumble end
 
@@ -247,7 +250,42 @@ contact = route("/contact") do c::Connection
 end
 
 writeups = route("/writeups") do c::Connection
-    write!(c, "`write ups` has yet to be fully implemented into `ChifiDocs`.")
+    write!(c, c[:doc].pages["styles"])
+    args = get_args(c)
+    if haskey(args, :q)
+        n::String = args[:q]
+        files = readdir("writeups")
+        found = findfirst(e -> replace(e, " " => "-", ".md" => "", "?" => "", "!" => "") == n, files)
+        page = if isnothing(found)
+            Documator.FOROFOUR
+        else
+            res = tmd("mainmd", read("writeups/" * files[found], String))
+            style!(res, "background-color" => "#675c6e", "border-radius" => 2px, "padding" => 5percent, 
+            "border" => "1px solid #333333", "width" => 90percent)
+            res[:text] = ToolipsServables.rep_in(res[:text])
+            res
+        end
+        main_body = body("mainbody", children = [page])
+        style!(main_body, "padding" => 5percent, "background-color" => "#1e1e1e")
+        write!(c, main_body)
+        return
+    end
+    previews = Vector{AbstractComponent}([begin
+        safe_name = replace(writeup_file, " " => "-", ".md" => "", "?" => "", "!" => "")
+        prev = div("preview$safe_name", text = writeup_file[1:end - 3], onclick="location.href='/writeups?q=$safe_name';")
+        style!(prev, "cursor" => "pointer", "padding" => 14px, "border" => "1px solid #333333", "background-color" => "#675c6e", 
+        "font-size" => 16pt)
+        prev
+    end for writeup_file in readdir("writeups")])
+    main = div("main", children = previews)
+    style!(main, "padding" => 40percent)
+    bod = body("bod", children = [main])
+    style!(bod, "background-color" => "#1e1e1e")
+    write!(c, bod)
+end
+
+render_writeup_page(c::Connection, name::String) = begin
+
 end
 
 function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
