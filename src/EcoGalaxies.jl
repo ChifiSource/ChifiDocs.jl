@@ -31,7 +31,7 @@ function make_ecogalaxy(mod::Module, systems::Vector{Documator.DocSystem},
                 selected_y = rand(50:h - 50)
                 lbl = Component{:text}("lbl$docname", x = selected_x, y = selected_y, text = string(docname))
                 style!(lbl, "font-weight" => "bold", "font-size" => 20pt, "stroke" => "#1e1e1e", 
-                "stroke-width" => 1px, "fill" => "pink", "transition" => 1seconds)
+                "stroke-width" => .5px, "fill" => "pink", "transition" => 1seconds)
                 push!(texts, lbl)
                 circ = Component{:circle}("$(docname)planet", cx = selected_x,
                     cy = selected_y, r = 1percent)
@@ -48,7 +48,6 @@ function make_ecogalaxy(mod::Module, systems::Vector{Documator.DocSystem},
                         "font-size" => 22pt)
                     end
                     if ~(docname in keys(dependents))
-                        @warn "canceled, $docname"
                         return
                     end
                     for dependent in dependents[docname]
@@ -58,14 +57,32 @@ function make_ecogalaxy(mod::Module, systems::Vector{Documator.DocSystem},
                         "font-size" => 22pt)
                     end
                 end
-                on("enter$docname", circ, "mouseenter")
-                on(circ, "mouseleave") do cl::ClientModifier
-                    cl[circ] = "r" => 1percent
-                    style!(cl, "dep$docname", "stroke" => "black")
-                    style!(cl, "lbl$docname", "fill" => "white")
+                on(Documator.session, "leave$docname") do cm::ComponentModifier
+                    cm[circ] = "r" => 1percent
+                    style!(cm, "lbl$docname", "fill" => "white", "font-size" => 20pt)
+                    this_mod = getfield(mod, docname)
+                    allnames = [keys(positions) ...]
+                    deps = findall(k -> isdefined(this_mod, k) && k != docname, allnames)
+                    for dep in deps
+                        style!(cm, "$docname$(allnames[dep])con", 
+                        "stroke" => "black", "stroke-width" => 1px)
+                        style!(cm, "lbl$(allnames[dep])", "fill" => "white", 
+                        "font-size" => 20pt)
+                    end
+                    if ~(docname in keys(dependents))
+                        return
+                    end
+                    for dependent in dependents[docname]
+                        style!(cm, "$dependent$(docname)con", 
+                        "stroke" => "black", "stroke-width" => 1px)
+                        style!(cm, "lbl$dependent", "fill" => "white", 
+                        "font-size" => 20pt)
+                    end
                 end
+                on("enter$docname", circ, "mouseenter")
+                on("leave$docname", circ, "mouseleave")
                 on(Documator.session, "plan$docname") do cm::ComponentModifier
-                    alert!(cm, "null")
+                    redirect!(cm, "/$(system.name)/$(docname)")
                 end
                 on("plan$docname", circ, "click")
                 style!(circ, "fill" => docmod.color, "transition" => 600ms)
@@ -93,11 +110,11 @@ function make_ecogalaxy(mod::Module, systems::Vector{Documator.DocSystem},
             connected_pos = positions[depkey]
             connector = Component{:line}("$(pos[1])$(depkey)con", x1 = pos[2][1], y1 = pos[2][2], 
                 x2 = connected_pos[1], y2 = connected_pos[2])
-            style!(connector, "stroke" => "black", "stroke-width" => .1percent)
+            style!(connector, "stroke" => "black", "stroke-width" => .3percent, 
+            "transition" => 750ms)
             insert!(galaxy_window[:children], 1, connector)
         end
     end
-    @warn dependents[:Toolips]
     compress!(galaxy_window)
     galaxy_window
     wrapper = div("$(mod)galaxy", children = [galaxy_window])
