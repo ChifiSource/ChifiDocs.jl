@@ -64,6 +64,9 @@ module Tumble end
 
 
 include("toolipsapp.jl")
+include("EcoGalaxies.jl")
+
+using ChifiDocs.EcoGalaxies
 
 components = Vector{AbstractComponent}()
 
@@ -307,7 +310,8 @@ function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
     to the rest of the `chifi` web.""", 
     "tags" => "Programming, Software, WebDevelopment, Internet, Julia, Julialang", "icon" => "/favicon.ico")
     ecotags = build_ecotags(docloader.docsystems)
-    push!(components,  build_collaborators(ecotags), ecotags ...)
+    push!(components,  build_collaborators(ecotags), 
+        EcoGalaxies.make_ecogalaxy(ChifiDocs, docloader.docsystems), ecotags ...)
     Documator.load_docs!(ChifiDocs, docloader)
     start!(Documator, ip, router_type = Documator.DocRoute)
 end
