@@ -85,7 +85,7 @@ function make_ecogalaxy(mod::Module, systems::Vector{Documator.DocSystem},
                     redirect!(cm, "/$(system.name)/$(docname)")
                 end
                 on("plan$docname", circ, "click")
-                style!(circ, "fill" => docmod.color, "transition" => 600ms)
+                style!(circ, "fill" => docmod.color, "transition" => 600ms, "cursor" => "pointer")
                 push!(galaxy_window, circ)
                 push!(positions, docname => (selected_x, selected_y))
             else
