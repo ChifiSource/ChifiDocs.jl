@@ -35,7 +35,8 @@ using Olive.OliveHighlighters
 using OlivePython
 using OliveDocBrowser
 using SMTPClient
-
+# algebraf frames !!! $@#!#$#!@
+using AlgebraFrames
 """
 #### chifi !
 - What on Earth is a 'chifi'?
@@ -53,10 +54,6 @@ function chifi end
 This sample was grabbed through documentation (`this` is a function) interpolation built into `Documator`!
 """
 function this end
-
-module AlgebraFrames
-
-end
 
 module ChiProxy end
 

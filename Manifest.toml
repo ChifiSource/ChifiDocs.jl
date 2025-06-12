@@ -2,7 +2,14 @@
 
 julia_version = "1.11.5"
 manifest_format = "2.0"
-project_hash = "bd854fc240f2d1f93861cb80bd782d2e61162b74"
+project_hash = "37b538eab971dc4d88b700b022d7121a98be3bf3"
+
+[[deps.AlgebraFrames]]
+git-tree-sha1 = "9ee46db4ceccc1d6cb501ee3766a901f242319ef"
+repo-rev = "main"
+repo-url = "https://github.com/ChifiSource/AlgebraFrames.jl"
+uuid = "91245b94-7320-4a9d-ac3a-8d3b3e6674af"
+version = "0.1.0"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -111,9 +118,9 @@ version = "1.10.16"
 
 [[deps.IPyCells]]
 deps = ["JSON", "Random", "UUIDs"]
-git-tree-sha1 = "c5c165800547d37a5e81e66e16698f4de91d1460"
+git-tree-sha1 = "b1de385e527c8110d68e6739a0c43761272742ce"
 uuid = "f2c63c6a-782d-45ad-850e-588fc6f0abf6"
-version = "0.2.3"
+version = "0.2.4"
 
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
@@ -223,13 +230,13 @@ version = "1.2.0"
 
 [[deps.Olive]]
 deps = ["IPyCells", "OliveHighlighters", "Pkg", "Revise", "TOML", "Toolips", "ToolipsSession"]
-git-tree-sha1 = "84c3c9e9c54a54f75a854000c99891b8640a4c0c"
+git-tree-sha1 = "5e0f4958c44cb7f6c7607567929fd789b0277eac"
 uuid = "724ecaf6-c7a0-4c22-b37e-0bb7b4193da8"
-version = "0.1.2"
+version = "0.1.3"
 
 [[deps.OliveDocBrowser]]
 deps = ["Olive"]
-git-tree-sha1 = "457325eb2caa572bf4ebc5d6a3b3cafcdedb9ae9"
+git-tree-sha1 = "6e27983e5048e9a74e03a0d0e6395bcf0216a2ca"
 repo-rev = "main"
 repo-url = "https://github.com/ChifiSource/OliveDocBrowser.jl"
 uuid = "730a473e-e451-46cc-9004-d443de66d173"
@@ -237,9 +244,9 @@ version = "0.1.0"
 
 [[deps.OliveHighlighters]]
 deps = ["ToolipsServables"]
-git-tree-sha1 = "6629247b3e09c9679a26068d1876e1f5602fadcb"
+git-tree-sha1 = "1825856e2e9097a4ba373982c1994a0a8ac1c92f"
 uuid = "f769160f-f39a-4920-b1de-ba699e2d8893"
-version = "0.1.1"
+version = "0.1.2"
 
 [[deps.OlivePython]]
 deps = ["Olive", "PyCall"]
@@ -271,9 +278,9 @@ version = "1.8.1"
 
 [[deps.ParametricProcesses]]
 deps = ["Distributed"]
-git-tree-sha1 = "69df9c376bed61a3c5ca5b57ddb1e18ea5b1714a"
+git-tree-sha1 = "5c91b589c9068684360344796b4fa18ea7025862"
 uuid = "9ce9415f-ecd2-4b63-a3f6-984ce63e76ce"
-version = "0.1.2"
+version = "0.1.3"
 
 [[deps.ParametricScheduler]]
 deps = ["Dates", "ParametricProcesses", "Pkg"]
@@ -339,9 +346,9 @@ version = "1.3.1"
 
 [[deps.Revise]]
 deps = ["CodeTracking", "FileWatching", "JuliaInterpreter", "LibGit2", "LoweredCodeUtils", "OrderedCollections", "REPL", "Requires", "UUIDs", "Unicode"]
-git-tree-sha1 = "cedc9f9013f7beabd8a9c6d2e22c0ca7c5c2a8ed"
+git-tree-sha1 = "f6f7d30fb0d61c64d0cfe56cf085a7c9e7d5bc80"
 uuid = "295af30f-e4ad-537b-8983-00126c2a3abe"
-version = "3.7.6"
+version = "3.8.0"
 weakdeps = ["Distributed"]
 
     [deps.Revise.extensions]
@@ -391,31 +398,31 @@ version = "1.11.0"
 
 [[deps.Toolips]]
 deps = ["Crayons", "HTTP", "ParametricProcesses", "Pkg", "Sockets", "ToolipsServables"]
-git-tree-sha1 = "049bf7fe0fb572aaeea56d4a558669790cb0b737"
+git-tree-sha1 = "3084eed570f9e4483f9bd61427c8f4496839b38d"
 uuid = "a47e2ad8-fcf7-417c-9746-32b9bdf220bd"
-version = "0.3.9"
+version = "0.3.10"
 
 [[deps.ToolipsSVG]]
 deps = ["ToolipsServables"]
-git-tree-sha1 = "ccc78bcf942887e5ca4f60d5aa4f433bba72b904"
+git-tree-sha1 = "d21380a6c5cb1acad5f2ad5d567924e7aaf2a1c0"
 repo-rev = "Unstable"
 repo-url = "https://github.com/ChifiSource/ToolipsSVG.jl.git"
 uuid = "8ae86ec9-919d-4ece-9a6d-09b7d28dae11"
-version = "0.2.1"
+version = "0.2.2"
 
 [[deps.ToolipsServables]]
 deps = ["Base64", "Markdown"]
-git-tree-sha1 = "93fd337cc89b34f2439aea35307c79f87bd4f6f6"
+git-tree-sha1 = "3e77900cabb1d3af173a4529362f78bba37af1c7"
 repo-rev = "Unstable"
 repo-url = "https://github.com/ChifiSource/ToolipsServables.jl.git"
 uuid = "bf3a9e68-ca66-4981-8178-9d71c4f8abaa"
-version = "0.2.2"
+version = "0.2.3"
 
 [[deps.ToolipsSession]]
 deps = ["Dates", "Toolips"]
-git-tree-sha1 = "c34e49ee1c47cee2e6a2e498deaa2f8e52384cff"
+git-tree-sha1 = "becb1d09bf5693073ef3832bfac8d0dac8410795"
 uuid = "2fe55384-55bc-4df3-9d59-c817d405cd05"
-version = "0.4.2"
+version = "0.4.3"
 
 [[deps.ToolipsUDP]]
 deps = ["Toolips"]
