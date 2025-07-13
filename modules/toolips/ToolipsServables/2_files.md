@@ -19,3 +19,12 @@ end
 ```
 ## interpolation
 With this basic file functionality also comes some interpolation tools for components, files, and combinations of the two. This is exclusively handled using the `interpolate!` and `interpolate!` functions. When interpolating files we use the `interpolate` binding. Our file should have component names and argument names with a `$` before them.`interpolate!` is used for components and allows us to interpolate `code` tags within a `Component{:div}` -- this is created almost exclusively for markdown interpolation with the `tmd` `Component`.
+```julia
+# interpolate markdown code-blocks, each fill func is passed the raw `String` data.
+interpolate!(comp::Component{:div}, fillfuncs::Pair{String, <:Any} ...)
+
+# interpolated components + values (`keyargs`) for markdown:
+interpolate!(mdcomp::Component{:div}, components::Component{<:Any} ...; keyargs ...)
+# interpolated components + values (`keyargs`) for files:
+interpolate(f::File{<:Any}, components::AbstractComponent ...; args ...)
+```

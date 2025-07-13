@@ -19,7 +19,7 @@ using NewServer; start!(UDP, NewServer)
 ```
 - `ToolipsUDP` also includes a similar binding for `new_app` that takes `:UDP` as an argument.
 ## handlers
-An `AbstractUDPHandler` is the UDP equivalent of the `AbstractRoute`. These objects of these types will take our response functions, and will be exported from our server. `ToolipsUDP` includes the `UDPHandler` and the `NamedHandler`. Both of these are constructed via a convenient `handler` function. When provided a `String`, this will produce a `NamedHandler`. The `NamedHandler` allows us to set the handlers before finishing any given response, allowing for the next response to be in-line with the prior response's state. This is a convenience feature that implements a psuedo-routing system atop UDP servers.
+Handlers are like routes for non-HTTP `Toolips` servers. These objects of these types will take our response functions, and will be exported from our server. `ToolipsUDP` includes the `Handler` and the `NamedHandler` from `Toolips`. Both of these are constructed via a convenient `handler` function. When provided a `String`, this will produce a `NamedHandler`. The `NamedHandler` allows us to set the handlers before finishing any given response, allowing for the next response to be in-line with the prior response's state. This is a convenience feature that implements a psuedo-routing system atop UDP servers.
 
 ```julia
 module HandlerSample

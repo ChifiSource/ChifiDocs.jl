@@ -25,8 +25,7 @@ Toolips is able to create …
 - Interactive fullstack web applications (using the ToolipSession extension)
 - Other HTTP or TCP servers (e.g. Proxy server, data-base cursor)
 - UDP servers and web-services services (e.g. Systems servers, DNS servers) (using the `ToolipsUDP` extension for UDP.)
-
-Toolips is no ordinary framework; the framework is extensible at every level. There are such particular cases in web-development, it is such a versatile application that we need a versatile framework. For instance, by writing new methods for the route! function in Toolips we can write a custom router that, for example, writes a unique profile for each user based on their URL — so we never have to register a route for each individual profile. I also used a similar technique to create a proxy server.
+---
 - `Toolips` requires **julia**. Get Julia [here](https://julialang.org/)
 ## development environment
 To get started with `Toolips` from Julia, you will need to add the package to an environment with `Pkg`.
@@ -45,9 +44,6 @@ Pkg.add(name = "Toolips", rev = "Unstable")
 ## server modules
 `Toolips` servers only require a `Module` to run, not a file-system -- we can start a server from any `Module` with `Toolips.start!`. 
 `start!` is provided with a `Module` (your server), an `IP4` (the IP and port to start the server on,) and has the optional key-word arguments `threads` and `router_threads`.
-```docstrings
-start!
-```
 ```julia
 module ExampleServer
 using Toolips

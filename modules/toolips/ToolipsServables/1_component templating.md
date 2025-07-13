@@ -67,6 +67,8 @@ For the majority of tags, `ToolipsServables` provides **constants** that alias t
 - `cursor`
 - `context_menu!`
 - `keyinput`
+- `dateinput`
+- `button_select`
 
 ( modifies a `Component`)
 - `textdiv_caret_tracker!`

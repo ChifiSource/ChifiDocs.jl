@@ -10,13 +10,8 @@ end
 The provided `Function` will take one positional argument, an `AbstractConnection`. A standard `Toolips` route will hold the `Connection` type in a type parameter. The call above will return a `Route{Connection}`.  With no annotation, this will automatically use any `AbstractConnection`. This is primarily used for `Toolips` [multiple-dispatch routing](#multiroute).
 ## the connection
 A route will be passed a `Connection` whenever it is routed with `route!`. A `Connection` represents a client's entrance into the `Function` pipeline -- each time a request is made to the server. The `Connection` stores the server's routes in its `Connection.routes` field and the server's data in its `Connection.data` field. 
-```docstrings
-Connection
-```
 The most vital function in association with the `Connection` is `write!`, which is used to write data to the incoming `Connection` as a response. Note that `write!` is not `write`, as this is a mutating `write!` -- a write on a response *cannot* be reverted!
-```docstrings
-write!
-```
+
 There are also several *getter* methods associated with the `Connection`, which may be used to retrieve data(*click* to reveal docstrings):
 
 - `get_args`
@@ -77,6 +72,9 @@ using Toolips
 
 home = route("/") do c::AbstractConnection
 
+end
+# make sure to export!
+export home
 end
 ```
 We can write strings as a response with `write!`

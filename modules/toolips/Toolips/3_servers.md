@@ -156,5 +156,5 @@ export TRACKER, home, client_count
 end
 ```
 and we finish by exporting it in our server `Module`. Note that these bindings are **not necessary** but optional dependent on the desired functionality of the `ServerExtension`.
-
-
+## extended servers
+While `Toolips` *primarily* targets HTTP-based web-development, the package is not *just* a web-development framework, but also a **server-development framework**.
