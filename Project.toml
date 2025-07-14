@@ -1,7 +1,7 @@
 name = "ChifiDocs"
 uuid = "2902d582-2320-11ef-162d-5129ef18b83b"
 authors = ["emmac "]
-version = "0.0.2"
+version = "0.0.3"
 
 [deps]
 AlgebraFrames = "91245b94-7320-4a9d-ac3a-8d3b3e6674af"
