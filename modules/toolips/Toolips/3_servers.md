@@ -157,4 +157,48 @@ end
 ```
 and we finish by exporting it in our server `Module`. Note that these bindings are **not necessary** but optional dependent on the desired functionality of the `ServerExtension`.
 ## extended servers
-While `Toolips` *primarily* targets HTTP-based web-development, the package is not *just* a web-development framework, but also a **server-development framework**.
+While `Toolips` *primarily* targets HTTP-based web-development, the package is not *just* a web-development framework, but also a **server-development framework**. For UDP servers, check out the [ToolipsUDP](/toolips/ToolipsUDP) extension. `Toolips` includes a built-in TCP server extension. To start from a `TCP` server template, use 
+`new_app(:TCP, name::String)` dispatch of `new_app`.
+```julia
+using Toolips
+
+Toolips.new_app(:TCP, "NewServer")
+```
+This will give us a nice minimal demonstration:
+```julia
+module NewServer
+using Toolips
+using Toolips: get_ip4, handler, read_all
+
+main_handler = handler() do c::Toolips.SocketConnection
+    query = read_all(c)
+    write!(c, "hello client!")
+end
+# (try with `socket = connect(server IP4); write!(socket, "hello server!"); print(String(readavailable(socket)))`
+export main_handler, start!
+end
+```
+The `Connection` is then replaced with the `SocketConnection`, and the `Route` with the `Handler`. The `Handler` is an `AbstractHandler`, created using the `handler` function. TCP is a `Connection`-based protocol, and in most cases we would choose to keep this connection open. There is also `get_ip4` for getting the connecting port alongside the IP address. The `is_closed` and `is_connected` bindings are useful for this.
+```julia
+main_handler = handler() do c::Toolips.SocketConnection
+    input_str = ""
+    while is_connected(c)
+        input_str = input_str * input_str
+        if ~(length(input_str) > 2 && input_str[end - 1:end] == "!\n")
+            continue
+        end
+        result = input_str[1:end - 3]
+        @warn result
+        if result == "password"
+            break
+        end
+        write!(c, "thanks for sending!")
+        input_str = ""
+    end
+    # second loop?
+    while is_connected(c)
+      break
+    end
+end
+```
+There is also a convenience function provided for easily creating a `handler`, `continue_connection`.

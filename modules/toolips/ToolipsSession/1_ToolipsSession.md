@@ -94,3 +94,4 @@ Each of the following functions can be used to register an event in different wa
 - and `RPCHost`.
 
 Events are routed by `Session` to the callbacks on your web-page, the callbacks are registered an ID along with your response. The events are then called using `call!`. This isn't always done with the `register!` function, but most often this is the case. `ToolipsSession` also provides a binding to `kill!` (`kill!(c::AbstractConnection)`) which will remove a user's events from the current session. There is also `clear!`, which will **only remove the client's events** -- not deleting them from the IP table. Beyond this, most of `ToolipsSession` usage will remain in the high-level `on` and `bind` functions.
+
