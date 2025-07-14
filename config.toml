@@ -21,6 +21,10 @@ color = "#B3438F"
 path = "chifi/ChiProxy"
 color = "#40859c"
 
+[chifi.ChiDB]
+path = "chifi/ChiDB"
+color = "#D174B5"
+
 [parametric]
 color = "#333333"
 txtcolor = "white"
@@ -29,11 +33,6 @@ icon = "/ecosystems/parametric.png"
 [parametric.ParametricProcesses]
 path = "parametric/ParametricProcesses"
 color = "#75B2C8"
-txtcolor = "white"
-
-[parametric.IPyCells]
-path = "parametric/IPyCells"
-color = "#c91a43"
 txtcolor = "white"
 
 [parametric.ParametricScheduler]
@@ -66,6 +65,14 @@ color = "#723176"
 [toolips.ToolipsUDP]
 path = "toolips/ToolipsUDP"
 color = "#D2B752"
+
+[toolips.ToolipsCrawl]
+path = "toolips/ToolipsCrawl"
+color = "#962169"
+
+[toolips.ToolipsORM]
+path = "toolips/ToolipsORM"
+color = "#9600FA"
 
 [gattino]
 color = "#C178B5"
@@ -102,6 +109,11 @@ path = "olive/OliveDocBrowser"
 color = "#AA336A"
 txtcolor = "#1e1e1e"
 
+[olive.IPyCells]
+path = "olive/IPyCells"
+color = "#c91a43"
+txtcolor = "white"
+
 [algebraframes]
 color = "#ba9604"
 icon = "/ecosystems/algebraframes.png"
@@ -110,6 +122,10 @@ txtcolor = "white"
 [algebraframes.AlgebraFrames]
 path = "algebraframes/AlgebraFrames"
 color = "#891496"
+
+[algebraframes.AlgebraStreamFrames]
+path = "algebraframes/AlgebraStreamFrames"
+color = "#c70000"
 
 [tumble]
 color = "#D73636"
