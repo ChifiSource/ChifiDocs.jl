@@ -1,3 +1,2 @@
 ## nothing here, yet...
-`ChiProxy` is still under continuous development and has not had documentation written for it yet. Please bear with us as we work to make these packages available!
-
+`ChiProxy` is still under continuous development and has not had documentation written for it yet.

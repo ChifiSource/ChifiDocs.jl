@@ -58,7 +58,10 @@ function this end
 module ChiProxy end
 
 module Tumble end
-
+module ChiDB end
+module AlgebraStreamFrames end
+module ToolipsORM end
+module ToolipsCrawl end
 
 include("toolipsapp.jl")
 include("EcoGalaxies.jl")
