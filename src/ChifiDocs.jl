@@ -256,7 +256,7 @@ contact = route("/contact") do c::Connection
 end
 
 writeups = route("/writeups") do c::Connection
-    write!(c, c[:doc].pages["styles"])
+    write!(c, c[:doc].pages["styles"], Style("p", "color" => "white"))
     args = get_args(c)
     if haskey(args, :q)
         n::String = args[:q]
@@ -265,7 +265,9 @@ writeups = route("/writeups") do c::Connection
         page = if isnothing(found)
             Documator.FOROFOUR
         else
-            res = tmd("mainmd", read("writeups/" * files[found], String))
+            f = read("writeups/" * files[found], String)
+            res = tmd("mainmd", replace(f, "<" => "LT!", ">" => "GT!"))
+            res[:text] = replace(res[:text], "LT!" => "<", "GT!" => ">")
             style!(res, "background-color" => "#675c6e", "border-radius" => 2px, "padding" => 5percent, 
             "border" => "1px solid #333333", "width" => 90percent)
             res[:text] = ToolipsServables.rep_in(res[:text])
@@ -310,7 +312,7 @@ function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
     to the rest of the `chifi` web.""", 
     "tags" => "Programming, Software, WebDevelopment, Internet, Julia, Julialang", "icon" => "/favicon.ico")
     ecotags = build_ecotags(docloader.docsystems)
-    push!(components,  build_collaborators(ecotags), 
+    push!(components,  build_collaborators(ecotags),
         EcoGalaxies.make_ecogalaxy(ChifiDocs, docloader.docsystems), ecotags ...)
     Documator.load_docs!(ChifiDocs, docloader)
     start!(Documator, ip, router_type = Documator.DocRoute)

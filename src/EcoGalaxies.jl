@@ -8,12 +8,21 @@ using Documator.ToolipsSession
 function make_ecogalaxy(mod::Module, systems::Vector{Documator.DocSystem}, 
     mods::Module ...)
     @info "rendering ecogalaxy '$mod'..."
-    w, h = 2000, 800
+    lbl_curr = a(text = "selected package: ")
+    lbl_choice = a("ecochoice", text = "")
+    deps_labl = h3(text = "dependencies:")
+    depsp = p("depsp", text = "")
+    pendents_labl = h3(text = "dependents")
+    pendsp = p("pendsp", text = "")
+    lbl_box = div("lblbox", children = [lbl_curr, lbl_choice, deps_labl, depsp, pendents_labl, 
+        pendsp])
+    style!(lbl_box, "height" => 5percent)
+    w, h = 1450, 800
     circles::Vector{AbstractComponent} = Vector{AbstractComponent}()
     galaxy_window = svg("galaxywin", width = w, height = h)
     n = length(systems)
-    galax_step = Int64(round((w) / n))
-    current_min = 20
+    galax_step = Int64(round((w - 200) / n))
+    current_min = 50
     current_max = galax_step
     positions = Dict{Symbol, Tuple{Int64, Int64}}()
     texts = Vector{AbstractComponent}()
@@ -29,9 +38,9 @@ function make_ecogalaxy(mod::Module, systems::Vector{Documator.DocSystem},
                 r = 9
                 selected_x = rand(current_min:current_max)
                 selected_y = rand(50:h - 50)
-                lbl = Component{:text}("lbl$docname", x = selected_x, y = selected_y, text = string(docname))
+                lbl = Component{:text}("lbl$docname", x = selected_x + 10, y = selected_y + 20, text = string(docname))
                 style!(lbl, "font-weight" => "bold", "font-size" => 20pt, "stroke" => "#1e1e1e", 
-                "stroke-width" => .5px, "fill" => "pink", "transition" => 1seconds)
+                "stroke-width" => .5px, "fill" => "pink", "transition" => 1seconds, "pointer-events" => "none")
                 push!(texts, lbl)
                 circ = Component{:circle}("$(docname)planet", cx = selected_x,
                     cy = selected_y, r = 1percent)
@@ -41,21 +50,28 @@ function make_ecogalaxy(mod::Module, systems::Vector{Documator.DocSystem},
                     this_mod = getfield(mod, docname)
                     allnames = [keys(positions) ...]
                     deps = findall(k -> isdefined(this_mod, k) && k != docname, allnames)
+                    set_text!(cm, "ecochoice", string(docname))
+                    deptext = ""
                     for dep in deps
                         style!(cm, "$docname$(allnames[dep])con", 
                         "stroke" => "orange", "stroke-width" => 3px)
                         style!(cm, "lbl$(allnames[dep])", "fill" => "orange", 
                         "font-size" => 22pt)
+                        deptext = deptext * string(allnames[dep]) * ", "
                     end
+                    set_text!(cm, "depsp", deptext)
                     if ~(docname in keys(dependents))
                         return
                     end
+                    deptext = ""
                     for dependent in dependents[docname]
                         style!(cm, "$dependent$(docname)con", 
                         "stroke" => docmod.color, "stroke-width" => 4px)
                         style!(cm, "lbl$dependent", "fill" => docmod.color, 
                         "font-size" => 22pt)
+                        deptext = deptext * "$dependent, "
                     end
+                    set_text!(cm, "pendsp", deptext)
                 end
                 on(Documator.session, "leave$docname") do cm::ComponentModifier
                     cm[circ] = "r" => 1percent
@@ -117,7 +133,7 @@ function make_ecogalaxy(mod::Module, systems::Vector{Documator.DocSystem},
     end
     compress!(galaxy_window)
     galaxy_window
-    wrapper = div("$(mod)galaxy", children = [galaxy_window])
+    wrapper = div("$(mod)galaxy", children = [lbl_box, galaxy_window])
     style!(wrapper, "overflow" => "scroll", "border-radius" => 4px, "border" => "2px solid #333333")
     return(wrapper)
 end
