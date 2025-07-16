@@ -18,10 +18,25 @@ toolips_app = route("/toolips/app") do c::Connection
     tlapp_wrap = a("tlappwrap", children = [tlapp_img])
     back_wrap = a("backwrap", text = "<", onclick = "location.href='/'", class = "topbar")
     srclnk = a("srclnk", text = "source", class = "topbar")
+    on(c, srclnk, "click") do cm::ComponentModifier
+        srctxt = cm[srclnk]["text"]
+        curr_pos = parse(Int64, cm["gallery"]["position"])
+        if srctxt == "source"
+            new_win = build_app_source(curr_pos)
+            remove!(cm, "mainframe")
+            append!(cm, "gallery", new_win)
+            set_text!(cm, "srclnk", "webview")
+            return
+        end
+        new_win = build_app_frame(curr_pos)
+        remove!(cm, "mainframe")
+        append!(cm, "gallery", new_win)
+        set_text!(cm, "srclnk", "source")
+    end
     style!(tlapp_wrap, "padding" => 1percent)
     topbar = div("topbar", align = "left", children = [back_wrap, tlapp_wrap, srclnk])
     style!(topbar, "position" => "absolute", "top" => 0percent, "left" => 0percent, "background-color" => "#432f61", "width" => 100percent, "display" => "inline-block", 
-        "height" => 3percent, "overflow" => "hidden")
+        "height" => 3percent, "overflow" => "visbile")
     gallery = build_app_window(c, 1)
     meta = title(text = "toolips app !")
     main_body = body("tlapp", children = [meta, tl_topbar, topbar, gallery])
@@ -77,5 +92,11 @@ function build_app_window(c::AbstractConnection, position::Integer)
 end
 
 function build_app_source(position::Integer)
-
+    app = TOOLIPS_APPS[position]
+    raw = read(DIREC * "/toolipsapp/$(app.name).jl", String)
+    set_text!(Documator.JULIA_HIGHLIGHTER, raw)
+    OliveHighlighters.mark_julia!(Documator.JULIA_HIGHLIGHTER)
+    frame = div("mainframe", text = string(Documator.JULIA_HIGHLIGHTER), align = "left")
+    style!(frame, "padding" => 2percent, "background-color" => "#13382a", "overflow" => "scroll")
+    frame::Component{:div}
 end
