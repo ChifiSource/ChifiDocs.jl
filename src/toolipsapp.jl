@@ -69,21 +69,23 @@ main = route("/") do c::Toolips.AbstractConnection
 end
 
 # make sure to export!
-export main, four_o4, site_data
-export api, public_files
-export SESSION, logger
+export main
 end # - module EmmysApp <3
 
 
 toolips_app = route("/toolips/app") do c::Connection
     gallery = div("gallery")
-    style!(gallery, "position" => "absolute", "width" => 100percent, "height" => 100percent, 
-    "background-color" => "#73327a", "top" => 0percent, "left" => 0percent)
-    tlapp_img = img(src = "/images/toolipsapp.png")
-    sub = h2(text = "coming soon, as part of chifidocs")
-    style!(sub, "color" => "white")
-    maindiv = div("mainmsg", align = "center", "padding" => 20percent, children = [tlapp_img, sub])
-    push!(gallery, maindiv)
-    main_body = body("tlapp", children = [gallery])
+    style!(gallery, "position" => "absolute", "width" => 100percent, "height" => 92percent, "padding" => 2percent, "top" => 5percent, "left" => 0percent, 
+    "background-color" => "#2a272b")
+    tlapp_img = img(src = "/images/toolipsapp.png", width = 150)
+    tlapp_wrap = a("tlappwrap", children = [tlapp_img])
+    back_wrap = a("backwrap", text = "<", onclick = "location.href='/'")
+    style!(back_wrap, "color" => "white", "font-weight" => "bold", "font-size" => 25pt, "cursor" => "pointer")
+    style!(tlapp_wrap, "padding" => 1percent)
+    topbar = div("topbar", align = "center", children = [back_wrap, tlapp_wrap])
+    style!(topbar, "position" => "absolute", "top" => 0percent, "left" => 0percent, "background-color" => "#432f61", "width" => 100percent, "display" => "inline-flex", 
+    "height" => 5percent, "overflow" => "hidden")
+
+    main_body = body("tlapp", children = [topbar, gallery])
     write!(c, main_body)
 end

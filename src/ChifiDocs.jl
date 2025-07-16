@@ -26,6 +26,7 @@ using Toolips.ToolipsServables
 using ToolipsSession
 using ToolipsUDP
 using ToolipsSVG
+using ToolipsCrawl
 # gattino c:
 using Gattino
 using GattinoPleths
@@ -61,7 +62,6 @@ module Tumble end
 module ChiDB end
 module AlgebraStreamFrames end
 module ToolipsORM end
-module ToolipsCrawl end
 
 include("toolipsapp.jl")
 include("EcoGalaxies.jl")
