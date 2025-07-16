@@ -301,7 +301,8 @@ function start_project(ip::IP4 = "192.168.1.10":8000, path::String = pwd())
     docloader.dir = path
     if ~(licenses.path in docloader.routes)
         # add new routes here!
-        push!(docloader.routes, licenses, contact, writeups, toolips_app)
+        push!(docloader.routes, licenses, contact, writeups, toolips_app, 
+            (app.route for app in TOOLIPS_APPS) ...)
     end
     docloader.docsystems, docloader.homename = Documator.read_doc_config(path, ChifiDocs)
     push!(docloader.meta, "title" => "chifi docs", 
