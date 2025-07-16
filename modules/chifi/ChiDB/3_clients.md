@@ -1,3 +1,0 @@
-## chidb client
-
-## toolips orm

@@ -1,3 +1,0 @@
-## query format
-
-## query commands
